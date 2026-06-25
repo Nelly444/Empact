@@ -37,7 +37,7 @@ frontend/   React + Vite + Tailwind v4 app
 cd backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # fill in DATABASE_URL, GLOBALGIVING_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY
+# create a .env file with: DATABASE_URL, GLOBALGIVING_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY, ALLOWED_ORIGINS
 uvicorn app.main:app --reload
 ```
 
@@ -48,7 +48,7 @@ Requires a running Postgres with `pgvector` — `docker compose up db` (see `doc
 ```bash
 cd frontend
 npm install
-cp .env.example .env   # set VITE_API_BASE_URL if not using the default
+# create a .env file with: VITE_API_BASE_URL (defaults to http://localhost:8000 if unset)
 npm run dev
 ```
 
