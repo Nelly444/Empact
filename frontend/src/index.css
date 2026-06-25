@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "@fontsource/source-serif-4/400.css";
+@import "@fontsource/inter";
+
+@theme {
+  /* Colors — Steep design system */
+  --color-ink: #17191c;
+  --color-pure-white: #ffffff;
+  --color-fog: #f7f7f8;
+  --color-ash: #4c4c4c;
+  --color-graphite: #777b86;
+  --color-dove: #a3a6af;
+  --color-slate: #8b8c8d;
+  --color-obsidian: #000000;
+  --color-rust: #5d2a1a;
+  --color-apricot-wash: #fbe1d1;
+  --color-sky-wash: #d3e3fc;
+
+  /* Typography */
+  --font-signifier: 'Source Serif 4', ui-serif, Georgia, serif;
+  --font-sohne: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Typography — Scale */
+  --text-caption: 14px;
+  --text-body: 16px;
+  --text-body-lg: 18px;
+  --text-subheading: 22px;
+  --text-heading-sm: 26px;
+  --text-heading: 44px;
+  --text-heading-lg: 64px;
+  --text-display: 90px;
+
+  /* Spacing */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-28: 28px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+
+  /* Border Radius */
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-subtle: rgba(4, 23, 43, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-pure-white);
+  color: var(--color-ink);
+  font-family: var(--font-sohne);
+}
