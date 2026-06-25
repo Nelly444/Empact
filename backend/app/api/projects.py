@@ -22,7 +22,7 @@ def list_projects(
     theme: str | None = None,
     db: Session = Depends(get_db),
 ):
-    """FR-5 structured filters, applied without semantic ranking."""
+    """Structured filters only — no semantic ranking, unlike /search."""
     query = _base_query()
     if org_name:
         query = query.join(Organization).where(Organization.name == org_name)

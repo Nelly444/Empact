@@ -15,9 +15,7 @@ router = APIRouter()
 
 @router.post("/search", response_model=SearchResponse)
 def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchResponse:
-    """FR-3 + FR-5 — filter first, then rank by semantic relevance if a
-    natural-language query was given; otherwise just return filtered results.
-    """
+    """Filter first, then rank by semantic relevance if a query was given."""
     query = select(Project).options(joinedload(Project.organization), joinedload(Project.snapshots))
 
     if request.org_name:

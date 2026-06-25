@@ -8,14 +8,13 @@ class ImpactEstimateOut(BaseModel):
     example_donation: float
     coverage_pct: float
     summary: str
-    # Present once enough snapshots exist; absent (None) otherwise rather
-    # than guessed — see app/services/impact.py.
+    # None (not 0) until enough snapshots exist — see app/services/impact.py.
     funding_velocity_per_day: float | None = None
     days_to_fully_funded: float | None = None
 
 
 class ProjectCardOut(BaseModel):
-    """Shape used by search results / list views (FR-6)."""
+    """Shape used by search results / list views."""
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -31,6 +30,6 @@ class ProjectCardOut(BaseModel):
 
 
 class ProjectDetailOut(ProjectCardOut):
-    """Full detail view (FR-7) — adds the raw description."""
+    """Adds the raw description for the project detail view."""
 
     description_raw: str | None

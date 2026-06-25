@@ -12,9 +12,7 @@ class Base(DeclarativeBase):
 
 @lru_cache
 def get_engine():
-    # Created lazily and cached so the app can boot (e.g. for /health) even
-    # before a real Postgres instance is reachable — connection is only
-    # attempted on first actual query.
+    # Lazy + cached so the app can boot even before Postgres is reachable.
     return create_engine(settings.database_url, pool_pre_ping=True)
 
 

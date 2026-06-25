@@ -20,7 +20,7 @@ class Project(Base):
     funding_goal: Mapped[float | None] = mapped_column(Numeric(12, 2), nullable=True)
     funding_raised: Mapped[float | None] = mapped_column(Numeric(12, 2), nullable=True)
 
-    # Cached per FR-4 — generated once by the batch job, never on-request.
+    # Generated once by the batch job and cached; never regenerated on read.
     summary_cached: Mapped[str | None] = mapped_column(Text, nullable=True)
     summary_generated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 

@@ -17,7 +17,7 @@ def list_organizations(db: Session = Depends(get_db)):
 
 @router.get("/organizations/filter-options")
 def filter_options(db: Session = Depends(get_db)) -> dict:
-    """Drives the FR-5 dropdowns: org name, home country, countries served, theme."""
+    """Feeds the frontend's filter dropdowns."""
     org_names = db.scalars(select(Organization.name).order_by(Organization.name)).all()
     home_countries = db.scalars(
         select(Organization.home_country).where(Organization.home_country.isnot(None)).distinct().order_by(Organization.home_country)

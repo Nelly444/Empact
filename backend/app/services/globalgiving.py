@@ -1,10 +1,7 @@
 """GlobalGiving API client.
 
-Field names below follow the PRD's documented shape (PRD §8). This is
-explicitly unverified against a live response — PRD §11 flags the same
-risk: "confirm against a live pull before finalizing schema." Treat the
-parsing in `_parse_organization` / `_parse_project` as the first thing to
-revisit once a real API key is available.
+Field names in parse_organization/parse_project are unverified against a
+live response — revisit these first once real project data comes through.
 """
 
 import httpx

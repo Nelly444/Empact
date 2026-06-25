@@ -4,8 +4,7 @@ from anthropic import Anthropic
 
 from app.core.config import settings
 
-# Cheap, fast model — appropriate for a batch summarization job (FR-4),
-# never called per-request.
+# Cheap, fast model — appropriate for a batch job, never called per-request.
 SUMMARY_MODEL = "claude-haiku-4-5"
 
 SUMMARY_PROMPT = (

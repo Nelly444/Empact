@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    database_url: str = "postgresql+psycopg2://charity:charity@localhost:5432/charity_finder"
+    database_url: str = "postgresql+psycopg2://charity:charity@localhost:5433/charity_finder"
     globalgiving_api_key: str = ""
     openai_api_key: str = ""
     anthropic_api_key: str = ""

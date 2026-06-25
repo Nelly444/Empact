@@ -54,4 +54,4 @@ npm run dev
 
 ## Status
 
-Early scaffold: backend API skeleton, data model, and AI service wiring are in place; frontend pages match the core user stories. GlobalGiving response shapes still need verification against a live API key.
+Early scaffold: backend API, data model, and AI service wiring are in place and verified against a local Postgres+pgvector instance. Frontend is a bare Vite/Tailwind shell — pages haven't been built yet. GlobalGiving response shapes still need verification against a live API key.

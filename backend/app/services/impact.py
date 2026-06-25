@@ -1,4 +1,4 @@
-"""Funding-impact estimate calculations — PRD §10.
+"""Funding-impact estimate calculations.
 
 Every number here is computed from real GlobalGiving fields. No invented
 outcome ratios (e.g. "$5 = 2 meals") are used anywhere in this module.
@@ -17,7 +17,7 @@ MIN_SNAPSHOTS_FOR_VELOCITY = 3
 
 
 def marginal_dollar_framing(project: Project, donation: float = EXAMPLE_DONATION) -> tuple[float, float, str]:
-    """PRD §10.1 — pure arithmetic on funding_goal / funding_raised."""
+    """Pure arithmetic on funding_goal / funding_raised — no external data."""
     goal = float(project.funding_goal or 0)
     raised = float(project.funding_raised or 0)
     remaining_need = max(goal - raised, 0)
@@ -34,9 +34,7 @@ def marginal_dollar_framing(project: Project, donation: float = EXAMPLE_DONATION
 
 
 def funding_velocity(snapshots: list[ProjectSnapshot]) -> tuple[float | None, float | None]:
-    """PRD §10.2 — $/day raised over the snapshot window, projected to
-    days-to-fully-funded. Returns (None, None) until enough history exists.
-    """
+    """$/day raised over the snapshot window; (None, None) until enough history exists."""
     if len(snapshots) < MIN_SNAPSHOTS_FOR_VELOCITY:
         return None, None
 

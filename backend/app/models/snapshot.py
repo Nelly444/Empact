@@ -7,12 +7,7 @@ from app.db.session import Base
 
 
 class ProjectSnapshot(Base):
-    """Append-only record of amount_raised over time.
-
-    Populated on every cache refresh (never overwritten) so the funding
-    velocity / time-to-fully-funded forecast (PRD 10.2) has real history to
-    compute from. See app/services/impact.py.
-    """
+    """Append-only amount_raised history, populated on every cache refresh — never overwritten."""
 
     __tablename__ = "project_snapshots"
 

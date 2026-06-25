@@ -2,9 +2,9 @@
 
 Run with: python -m app.jobs.refresh_cache
 
-This is the only place that calls the paid OpenAI/Anthropic APIs (FR-2,
-FR-4) — embeddings and summaries are generated once per project and
-persisted, never regenerated on a read path.
+This is the only place that calls the paid OpenAI/Anthropic APIs — embeddings
+and summaries are generated once per project and persisted, never
+regenerated on a read path.
 """
 
 from sqlalchemy import select
