@@ -6,7 +6,9 @@ services:
       POSTGRES_PASSWORD: charity
       POSTGRES_DB: charity_finder
     ports:
-      - "5432:5432"
+      # Host 5433 -> container 5432: avoids clashing with a native Postgres
+      # already running on the host's default 5432.
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
