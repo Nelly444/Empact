@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -11,8 +11,13 @@ router = APIRouter()
 
 
 @router.get("/organizations", response_model=list[OrganizationOut])
-def list_organizations(db: Session = Depends(get_db)):
-    return db.scalars(select(Organization).order_by(Organization.name)).all()
+def list_organizations(
+    limit: int = Query(50, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db),
+):
+    query = select(Organization).order_by(Organization.name, Organization.id).offset(offset).limit(limit)
+    return db.scalars(query).all()
 
 
 @router.get("/organizations/filter-options")

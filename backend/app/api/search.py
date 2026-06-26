@@ -28,7 +28,8 @@ def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchRespo
         query = query.where(Project.theme.in_(request.themes))
 
     if not request.query:
-        projects = db.scalars(query.distinct().limit(request.limit)).unique().all()
+        query = query.order_by(Project.id).distinct().limit(request.limit)
+        projects = db.scalars(query).unique().all()
         return SearchResponse(results=[to_project_card(p) for p in projects])
 
     query_vector = embed_text(request.query)

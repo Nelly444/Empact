@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.schemas.project import ProjectCardOut
 
@@ -9,7 +9,7 @@ class SearchRequest(BaseModel):
     home_country: str | None = None
     countries_served: str | None = None
     themes: list[str] | None = None
-    limit: int = 20
+    limit: int = Field(20, ge=1, le=100)
 
 
 class SearchResponse(BaseModel):

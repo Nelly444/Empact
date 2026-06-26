@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
@@ -20,6 +20,8 @@ def list_projects(
     org_name: str | None = None,
     home_country: str | None = None,
     theme: str | None = None,
+    limit: int = Query(50, ge=1, le=100),
+    offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
 ):
     """Structured filters only — no semantic ranking, unlike /search."""
@@ -31,7 +33,8 @@ def list_projects(
     if theme:
         query = query.where(Project.theme == theme)
 
-    projects = db.scalars(query.distinct()).unique().all()
+    query = query.order_by(Project.id).distinct().offset(offset).limit(limit)
+    projects = db.scalars(query).unique().all()
     return [to_project_card(p) for p in projects]
 
 
