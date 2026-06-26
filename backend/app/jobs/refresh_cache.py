@@ -10,6 +10,7 @@ API calls).
 """
 
 import argparse
+from datetime import datetime, timezone
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -49,8 +50,18 @@ def upsert_project(db: Session, raw: dict, org: Organization) -> Project:
             setattr(project, key, value)
     db.flush()
 
-    # Append-only snapshot of amount_raised — never overwrite history.
-    if project.funding_raised is not None:
+    # Only snapshot when the amount actually changed — otherwise every re-run
+    # of this job (even with no real funding movement) bloats the history.
+    latest_snapshot = db.scalar(
+        select(ProjectSnapshot)
+        .where(ProjectSnapshot.project_id == project.id)
+        .order_by(ProjectSnapshot.captured_at.desc())
+        .limit(1)
+    )
+    if project.funding_raised is not None and (
+        latest_snapshot is None
+        or float(latest_snapshot.amount_raised) != float(project.funding_raised)
+    ):
         db.add(ProjectSnapshot(project_id=project.id, amount_raised=project.funding_raised))
 
     return project
@@ -67,6 +78,7 @@ def ensure_summary(db: Session, project: Project) -> None:
     if project.summary_cached or not project.description_raw:
         return
     project.summary_cached = summarize_project(project.description_raw)
+    project.summary_generated_at = datetime.now(timezone.utc)
 
 
 def run(limit: int | None = None) -> None:

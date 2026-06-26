@@ -18,12 +18,14 @@ def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchRespo
     """Filter first, then rank by semantic relevance if a query was given."""
     query = select(Project).options(joinedload(Project.organization), joinedload(Project.snapshots))
 
+    if request.org_name or request.home_country or request.countries_served:
+        query = query.join(Organization)
     if request.org_name:
-        query = query.join(Organization).where(Organization.name == request.org_name)
+        query = query.where(Organization.name == request.org_name)
     if request.home_country:
-        query = query.join(Organization).where(Organization.home_country == request.home_country)
+        query = query.where(Organization.home_country == request.home_country)
     if request.countries_served:
-        query = query.join(Organization).where(Organization.countries_served.contains(request.countries_served))
+        query = query.where(Organization.countries_served.contains(request.countries_served))
     if request.themes:
         query = query.where(Project.theme.in_(request.themes))
 

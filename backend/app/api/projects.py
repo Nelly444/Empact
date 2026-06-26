@@ -26,10 +26,12 @@ def list_projects(
 ):
     """Structured filters only — no semantic ranking, unlike /search."""
     query = _base_query()
+    if org_name or home_country:
+        query = query.join(Organization)
     if org_name:
-        query = query.join(Organization).where(Organization.name == org_name)
+        query = query.where(Organization.name == org_name)
     if home_country:
-        query = query.join(Organization).where(Organization.home_country == home_country)
+        query = query.where(Organization.home_country == home_country)
     if theme:
         query = query.where(Project.theme == theme)
 
