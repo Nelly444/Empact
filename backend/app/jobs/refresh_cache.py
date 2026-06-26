@@ -1,11 +1,15 @@
 """Batch job: GlobalGiving -> Postgres cache, snapshots, embeddings, summaries.
 
-Run with: python -m app.jobs.refresh_cache
+Run with: python -m app.jobs.refresh_cache [--limit N]
 
 This is the only place that calls the paid OpenAI/Anthropic APIs — embeddings
 and summaries are generated once per project and persisted, never
-regenerated on a read path.
+regenerated on a read path. Omit --limit to sync GlobalGiving's full active
+project catalog (currently several thousand projects, several thousand paid
+API calls).
 """
+
+import argparse
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -65,12 +69,12 @@ def ensure_summary(db: Session, project: Project) -> None:
     project.summary_cached = summarize_project(project.description_raw)
 
 
-def run() -> None:
+def run(limit: int | None = None) -> None:
     client = GlobalGivingClient(settings.globalgiving_api_key)
     session_factory = get_session_factory()
     try:
         with session_factory() as db:
-            for raw_project in client.fetch_active_projects():
+            for raw_project in client.fetch_active_projects(limit=limit):
                 org = upsert_organization(db, raw_project)
                 project = upsert_project(db, raw_project, org)
                 ensure_embedding(db, project)
@@ -81,4 +85,6 @@ def run() -> None:
 
 
 if __name__ == "__main__":
-    run()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--limit", type=int, default=None)
+    run(limit=parser.parse_args().limit)

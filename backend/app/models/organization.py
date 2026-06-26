@@ -13,8 +13,8 @@ class Organization(Base):
     globalgiving_id: Mapped[str] = mapped_column(String, unique=True, index=True)
     name: Mapped[str] = mapped_column(String, index=True)
     home_country: Mapped[str | None] = mapped_column(String, index=True, nullable=True)
-    # TODO: confirm shape against a live GlobalGiving response — may need to
-    # become a join table if the API returns a nested list, not a flat string.
+    # GlobalGiving returns a list of countries; flattened to comma-separated
+    # here, so exact-match filtering on it is substring-based (see search.py).
     countries_served: Mapped[str | None] = mapped_column(String, nullable=True)
     logo_url: Mapped[str | None] = mapped_column(String, nullable=True)
     homepage_url: Mapped[str | None] = mapped_column(String, nullable=True)

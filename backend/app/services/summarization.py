@@ -10,7 +10,9 @@ SUMMARY_MODEL = "claude-haiku-4-5"
 SUMMARY_PROMPT = (
     "Summarize the following charity project description in 2-3 plain-English "
     "sentences for a prospective donor. Do not invent facts, statistics, or "
-    "impact figures that are not present in the text. Description:\n\n{description}"
+    "impact figures that are not present in the text. Respond with plain "
+    "prose only — no markdown headers, titles, or bullet points. "
+    "Description:\n\n{description}"
 )
 
 
