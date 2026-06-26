@@ -3,9 +3,11 @@ from functools import lru_cache
 from anthropic import Anthropic
 
 from app.core.config import settings
+from app.core.rate_limit import RateLimiter
 
 # Cheap, fast model — appropriate for a batch job, never called per-request.
 SUMMARY_MODEL = "claude-haiku-4-5"
+RATE_LIMIT_PER_MINUTE = 30
 
 SUMMARY_PROMPT = (
     "Summarize the following charity project description in 2-3 plain-English "
@@ -15,6 +17,8 @@ SUMMARY_PROMPT = (
     "Description:\n\n{description}"
 )
 
+_rate_limiter = RateLimiter(RATE_LIMIT_PER_MINUTE)
+
 
 @lru_cache
 def get_client() -> Anthropic:
@@ -22,6 +26,7 @@ def get_client() -> Anthropic:
 
 
 def summarize_project(description: str) -> str:
+    _rate_limiter.wait()
     message = get_client().messages.create(
         model=SUMMARY_MODEL,
         max_tokens=200,
