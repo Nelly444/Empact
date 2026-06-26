@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     globalgiving_api_key: str = ""
     openai_api_key: str = ""
     anthropic_api_key: str = ""
+    backend_api_key: str = ""
     allowed_origins: str = "http://localhost:5173"
 
     @property
