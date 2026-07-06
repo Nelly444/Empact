@@ -1,3 +1,4 @@
+import re
 from functools import lru_cache
 
 from anthropic import Anthropic
@@ -19,6 +20,24 @@ SUMMARY_PROMPT = (
 
 _rate_limiter = RateLimiter(RATE_LIMIT_PER_MINUTE)
 
+_HEADER_LINE = re.compile(r"^\s*#{1,6}\s+\S")
+_BULLET_LINE = re.compile(r"^\s*[-*•]\s+")
+_BOLD_ITALIC = re.compile(r"\*{1,3}(.+?)\*{1,3}")
+
+
+def _strip_markdown(text: str) -> str:
+    """The model doesn't always honor the plain-prose instruction — drop
+    stray title/header lines and clean up bullets/emphasis rather than
+    caching malformed text."""
+    lines = [
+        _BULLET_LINE.sub("", line)
+        for line in text.splitlines()
+        if not _HEADER_LINE.match(line)
+    ]
+    cleaned = " ".join(line.strip() for line in lines if line.strip())
+    cleaned = _BOLD_ITALIC.sub(r"\1", cleaned)
+    return cleaned.strip()
+
 
 @lru_cache
 def get_client() -> Anthropic:
@@ -32,4 +51,5 @@ def summarize_project(description: str) -> str:
         max_tokens=200,
         messages=[{"role": "user", "content": SUMMARY_PROMPT.format(description=description)}],
     )
-    return "".join(block.text for block in message.content if block.type == "text").strip()
+    raw = "".join(block.text for block in message.content if block.type == "text").strip()
+    return _strip_markdown(raw)
