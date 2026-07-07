@@ -5,7 +5,7 @@ from app.api import health, organizations, projects, search
 from app.core.config import settings
 from app.core.rate_limit import rate_limit_general
 
-app = FastAPI(title="Charity Finder API")
+app = FastAPI(title="Empact API")
 
 app.add_middleware(
     CORSMiddleware,
