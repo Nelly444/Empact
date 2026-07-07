@@ -30,4 +30,20 @@ def filter_options(db: Session = Depends(get_db)) -> dict:
     themes = db.scalars(
         select(Project.theme).where(Project.theme.isnot(None)).distinct().order_by(Project.theme)
     ).all()
-    return {"org_names": org_names, "home_countries": home_countries, "themes": themes}
+
+    # countries_served is a denormalized comma-joined string (see Organization
+    # model), so the distinct list of individual countries has to be built in
+    # Python rather than as a plain SQL DISTINCT.
+    raw_countries_served = db.scalars(
+        select(Organization.countries_served).where(Organization.countries_served.isnot(None))
+    ).all()
+    countries_served = sorted(
+        {country.strip() for value in raw_countries_served for country in value.split(",") if country.strip()}
+    )
+
+    return {
+        "org_names": org_names,
+        "home_countries": home_countries,
+        "themes": themes,
+        "countries_served": countries_served,
+    }
