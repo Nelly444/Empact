@@ -91,7 +91,11 @@ def run(limit: int | None = None) -> None:
                 project = upsert_project(db, raw_project, org)
                 ensure_embedding(db, project)
                 ensure_summary(db, project)
-            db.commit()
+                # Commit per project rather than once at the end: this is a
+                # long-running job with thousands of paid OpenAI/Anthropic
+                # calls, and a crash partway through must not discard AI
+                # output that's already been generated (and paid for).
+                db.commit()
     finally:
         client.close()
 

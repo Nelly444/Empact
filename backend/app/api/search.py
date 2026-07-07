@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.api.serializers import to_project_card
+from app.core.rate_limit import rate_limit_search
 from app.db.session import get_db
 from app.models.embedding import ProjectEmbedding
 from app.models.organization import Organization
@@ -13,7 +14,7 @@ from app.services.embeddings import embed_text
 router = APIRouter()
 
 
-@router.post("/search", response_model=SearchResponse)
+@router.post("/search", response_model=SearchResponse, dependencies=[Depends(rate_limit_search)])
 def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchResponse:
     """Filter first, then rank by semantic relevance if a query was given."""
     query = select(Project).options(joinedload(Project.organization), joinedload(Project.snapshots))
@@ -25,7 +26,11 @@ def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchRespo
     if request.home_country:
         query = query.where(Organization.home_country == request.home_country)
     if request.countries_served:
-        query = query.where(Organization.countries_served.contains(request.countries_served))
+        # countries_served is a comma-joined string (see Organization model), so a plain
+        # substring match would wrongly match "Niger" against "Nigeria", "Sudan" against
+        # "South Sudan", etc. Pad both sides with delimiters to require a whole-token match.
+        padded_countries = func.concat(", ", Organization.countries_served, ",")
+        query = query.where(padded_countries.contains(f", {request.countries_served},"))
     if request.themes:
         query = query.where(Project.theme.in_(request.themes))
 

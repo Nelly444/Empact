@@ -2,8 +2,8 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import health, organizations, projects, search
-from app.core.auth import require_api_key
 from app.core.config import settings
+from app.core.rate_limit import rate_limit_general
 
 app = FastAPI(title="Charity Finder API")
 
@@ -15,6 +15,6 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
-app.include_router(organizations.router, dependencies=[Depends(require_api_key)])
-app.include_router(projects.router, dependencies=[Depends(require_api_key)])
-app.include_router(search.router, dependencies=[Depends(require_api_key)])
+app.include_router(organizations.router, dependencies=[Depends(rate_limit_general)])
+app.include_router(projects.router, dependencies=[Depends(rate_limit_general)])
+app.include_router(search.router, dependencies=[Depends(rate_limit_general)])
