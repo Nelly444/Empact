@@ -1,6 +1,6 @@
 function SearchPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-fog">
+    <main className="flex min-h-[calc(100vh-64px)] items-center justify-center bg-fog">
       <div className="rounded-cards bg-pure-white p-12 shadow-subtle">
         <h1 className="font-signifier text-heading leading-heading tracking-heading text-ink">
           Empact
