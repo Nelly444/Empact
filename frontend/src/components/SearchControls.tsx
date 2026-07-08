@@ -1,6 +1,7 @@
 import { Loader2, Send } from 'lucide-react'
 import { useState } from 'react'
 import type { FilterOptions, SearchFilters } from '../lib/types'
+import ThemeMultiSelect from './ThemeMultiSelect'
 
 const selectClasses =
   'w-full truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none'
@@ -29,10 +30,6 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
       countries_served: countriesServed || undefined,
       themes: themes.length > 0 ? themes : undefined,
     })
-  }
-
-  function handleThemesChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setThemes(Array.from(event.target.selectedOptions, (option) => option.value))
   }
 
   return (
@@ -102,24 +99,9 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
 
         <div>
           <label className={labelClasses}>Themes</label>
-          <select
-            multiple
-            size={4}
-            value={themes}
-            onChange={handleThemesChange}
-            className={selectClasses}
-          >
-            {filterOptions?.themes.map((theme) => (
-              <option key={theme} value={theme}>
-                {theme}
-              </option>
-            ))}
-          </select>
+          <ThemeMultiSelect themes={filterOptions?.themes ?? []} selected={themes} onChange={setThemes} />
         </div>
       </div>
-      <p className="mt-8 font-sohne text-caption leading-caption tracking-caption text-graphite">
-        Hold Cmd (Mac) or Ctrl (Windows) to select multiple themes.
-      </p>
     </form>
   )
 }
