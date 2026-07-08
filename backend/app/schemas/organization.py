@@ -9,5 +9,6 @@ class OrganizationOut(BaseModel):
     name: str
     home_country: str | None
     countries_served: str | None
+    address: str | None
     logo_url: str | None
     homepage_url: str | None

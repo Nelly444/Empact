@@ -42,11 +42,18 @@ class GlobalGivingClient:
 def parse_organization(raw: dict) -> dict:
     org = raw.get("organization", {})
     countries = org.get("countries", {}).get("country", [])
+    address_parts = [
+        org.get("addressLine1"),
+        org.get("addressLine2"),
+        org.get("city"),
+        " ".join(part for part in (org.get("state"), org.get("postal")) if part) or None,
+    ]
     return {
         "globalgiving_id": str(org.get("id")),
         "name": org.get("name"),
         "home_country": org.get("country"),
         "countries_served": ", ".join(c["name"] for c in countries if c.get("name")) or None,
+        "address": ", ".join(part for part in address_parts if part) or None,
         "logo_url": org.get("logoUrl"),
         "homepage_url": org.get("url"),
     }

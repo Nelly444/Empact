@@ -11,6 +11,11 @@ RAW_PROJECT = {
         "logoUrl": "https://www.globalgiving.org/pfil/organ/372/orglogo.jpg",
         "country": "United States",
         "countries": {"country": [{"name": "Afghanistan", "iso3166CountryCode": "AF"}]},
+        "addressLine1": "Afghan Institute of Learning",
+        "addressLine2": "c/o CHI, PO Box 1058",
+        "city": "Dearborn",
+        "state": "Michigan",
+        "postal": "48121",
     },
     "title": "Learning Centers for Rural Afghan Women",
     "summary": "This project supports rural Learning Centers for Afghan women.",
@@ -28,6 +33,7 @@ def test_parse_organization_maps_real_fields():
         "name": "Afghan Institute of Learning",
         "home_country": "United States",
         "countries_served": "Afghanistan",
+        "address": "Afghan Institute of Learning, c/o CHI, PO Box 1058, Dearborn, Michigan 48121",
         "logo_url": "https://www.globalgiving.org/pfil/organ/372/orglogo.jpg",
         "homepage_url": "http://www.afghaninstituteoflearning.org",
     }
@@ -46,6 +52,23 @@ def test_parse_organization_handles_missing_organization_key():
     assert org["globalgiving_id"] == "None"
     assert org["name"] is None
     assert org["countries_served"] is None
+    assert org["address"] is None
+
+
+def test_parse_organization_omits_missing_address_parts():
+    raw = {
+        **RAW_PROJECT,
+        "organization": {
+            **RAW_PROJECT["organization"],
+            "addressLine1": None,
+            "addressLine2": None,
+            "city": "Dearborn",
+            "state": None,
+            "postal": None,
+        },
+    }
+    org = parse_organization(raw)
+    assert org["address"] == "Dearborn"
 
 
 def test_parse_project_maps_real_fields():

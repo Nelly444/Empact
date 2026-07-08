@@ -1,0 +1,118 @@
+import { Loader2, Send } from 'lucide-react'
+import { useState } from 'react'
+import type { FilterOptions, SearchFilters } from '../lib/types'
+
+const selectClasses =
+  'min-w-160 rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none'
+
+interface SearchControlsProps {
+  filterOptions: FilterOptions | null
+  isSearching: boolean
+  onSearch: (filters: SearchFilters) => void
+}
+
+function SearchControls({ filterOptions, isSearching, onSearch }: SearchControlsProps) {
+  const [query, setQuery] = useState('')
+  const [orgName, setOrgName] = useState('')
+  const [homeCountry, setHomeCountry] = useState('')
+  const [countriesServed, setCountriesServed] = useState('')
+  const [themes, setThemes] = useState<string[]>([])
+
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    onSearch({
+      query: query.trim() || undefined,
+      org_name: orgName || undefined,
+      home_country: homeCountry || undefined,
+      countries_served: countriesServed || undefined,
+      themes: themes.length > 0 ? themes : undefined,
+    })
+  }
+
+  function handleThemesChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setThemes(Array.from(event.target.selectedOptions, (option) => option.value))
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mx-auto max-w-3xl px-24 pb-64">
+      <div className="flex items-center gap-8 rounded-inputs border border-dove bg-pure-white px-20 py-16 shadow-subtle">
+        <input
+          type="text"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Describe the cause you care about — e.g. girls' education in East Africa"
+          className="flex-1 border-none font-sohne text-body text-ink outline-none placeholder:text-graphite"
+        />
+        <button
+          type="submit"
+          disabled={isSearching}
+          aria-label="Search"
+          className="flex h-40 w-40 shrink-0 items-center justify-center rounded-full bg-ink text-pure-white transition-opacity disabled:opacity-50"
+        >
+          {isSearching ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+        </button>
+      </div>
+
+      <div className="mt-16 flex flex-wrap gap-8">
+        <select
+          value={orgName}
+          onChange={(event) => setOrgName(event.target.value)}
+          className={selectClasses}
+        >
+          <option value="">All organizations</option>
+          {filterOptions?.org_names.map((name) => (
+            <option key={name} value={name}>
+              {name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={homeCountry}
+          onChange={(event) => setHomeCountry(event.target.value)}
+          className={selectClasses}
+        >
+          <option value="">All home countries</option>
+          {filterOptions?.home_countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={countriesServed}
+          onChange={(event) => setCountriesServed(event.target.value)}
+          className={selectClasses}
+        >
+          <option value="">All countries served</option>
+          {filterOptions?.countries_served.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+
+        <select
+          multiple
+          size={4}
+          value={themes}
+          onChange={handleThemesChange}
+          className={selectClasses}
+          aria-label="Themes — hold Cmd/Ctrl to select multiple"
+        >
+          {filterOptions?.themes.map((theme) => (
+            <option key={theme} value={theme}>
+              {theme}
+            </option>
+          ))}
+        </select>
+      </div>
+      <p className="mt-8 font-sohne text-caption leading-caption tracking-caption text-graphite">
+        Hold Cmd (Mac) or Ctrl (Windows) to select multiple themes.
+      </p>
+    </form>
+  )
+}
+
+export default SearchControls
