@@ -1,11 +1,11 @@
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-pure-white px-24 py-96 text-center">
+    <section className="relative isolate overflow-hidden bg-pure-white px-24 py-64 text-center sm:py-96">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-radial from-apricot-wash/40 via-transparent to-transparent"
       />
-      <h1 className="font-signifier text-heading-lg leading-heading-lg tracking-heading-lg text-ink">
+      <h1 className="font-signifier text-heading leading-heading tracking-heading text-ink sm:text-heading-lg sm:leading-heading-lg sm:tracking-heading-lg">
         Describe your cause. We'll find the charity.
       </h1>
       <p className="mx-auto mt-24 max-w-2xl font-sohne text-body-lg leading-body-lg tracking-body-lg text-ash">

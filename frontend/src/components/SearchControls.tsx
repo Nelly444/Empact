@@ -101,7 +101,7 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
         </div>
 
         <div>
-          <label className={labelClasses}>Themes (Cmd/Ctrl-click for multiple)</label>
+          <label className={labelClasses}>Themes</label>
           <select
             multiple
             size={4}
@@ -117,6 +117,9 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
           </select>
         </div>
       </div>
+      <p className="mt-8 font-sohne text-caption leading-caption tracking-caption text-graphite">
+        Hold Cmd (Mac) or Ctrl (Windows) to select multiple themes.
+      </p>
     </form>
   )
 }
