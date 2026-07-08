@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { formatCurrency, formatPercent, initials } from '../lib/format'
+import { formatCurrency, formatPercent, initials, safeHttpUrl } from '../lib/format'
 import type { ProjectCardOut } from '../lib/types'
 
 interface ResultCardProps {
@@ -12,15 +12,13 @@ function ResultCard({ project }: ResultCardProps) {
     project.funding_goal && project.funding_goal > 0
       ? Math.min(((project.funding_raised ?? 0) / project.funding_goal) * 100, 100)
       : null
+  const homepageUrl = safeHttpUrl(organization.homepage_url)
+  const logoUrl = safeHttpUrl(organization.logo_url)
 
   const orgInfo = (
     <div className="flex items-center gap-12">
-      {organization.logo_url ? (
-        <img
-          src={organization.logo_url}
-          alt={organization.name}
-          className="h-40 w-40 rounded-images object-cover"
-        />
+      {logoUrl ? (
+        <img src={logoUrl} alt={organization.name} className="h-40 w-40 rounded-images object-cover" />
       ) : (
         <span className="flex h-40 w-40 shrink-0 items-center justify-center rounded-full bg-sky-wash font-sohne text-caption font-medium text-ink">
           {initials(organization.name)}
@@ -38,8 +36,8 @@ function ResultCard({ project }: ResultCardProps) {
   return (
     <div className="rounded-cards bg-pure-white p-24 shadow-subtle">
       <div className="flex items-start justify-between gap-16">
-        {organization.homepage_url ? (
-          <a href={organization.homepage_url} target="_blank" rel="noopener noreferrer">
+        {homepageUrl ? (
+          <a href={homepageUrl} target="_blank" rel="noopener noreferrer">
             {orgInfo}
           </a>
         ) : (
