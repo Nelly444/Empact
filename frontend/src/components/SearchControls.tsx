@@ -3,7 +3,9 @@ import { useState } from 'react'
 import type { FilterOptions, SearchFilters } from '../lib/types'
 
 const selectClasses =
-  'min-w-160 rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none'
+  'w-full truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none'
+
+const labelClasses = 'mb-4 block font-sohne text-caption leading-caption tracking-caption text-graphite'
 
 interface SearchControlsProps {
   filterOptions: FilterOptions | null
@@ -53,64 +55,68 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
         </button>
       </div>
 
-      <div className="mt-16 flex flex-wrap gap-8">
-        <select
-          value={orgName}
-          onChange={(event) => setOrgName(event.target.value)}
-          className={selectClasses}
-        >
-          <option value="">All organizations</option>
-          {filterOptions?.org_names.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
+      <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <div>
+          <label className={labelClasses}>Organization</label>
+          <select value={orgName} onChange={(event) => setOrgName(event.target.value)} className={selectClasses}>
+            <option value="">All organizations</option>
+            {filterOptions?.org_names.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <select
-          value={homeCountry}
-          onChange={(event) => setHomeCountry(event.target.value)}
-          className={selectClasses}
-        >
-          <option value="">All home countries</option>
-          {filterOptions?.home_countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label className={labelClasses}>Home country</label>
+          <select
+            value={homeCountry}
+            onChange={(event) => setHomeCountry(event.target.value)}
+            className={selectClasses}
+          >
+            <option value="">All home countries</option>
+            {filterOptions?.home_countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <select
-          value={countriesServed}
-          onChange={(event) => setCountriesServed(event.target.value)}
-          className={selectClasses}
-        >
-          <option value="">All countries served</option>
-          {filterOptions?.countries_served.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label className={labelClasses}>Countries served</label>
+          <select
+            value={countriesServed}
+            onChange={(event) => setCountriesServed(event.target.value)}
+            className={selectClasses}
+          >
+            <option value="">All countries served</option>
+            {filterOptions?.countries_served.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <select
-          multiple
-          size={4}
-          value={themes}
-          onChange={handleThemesChange}
-          className={selectClasses}
-          aria-label="Themes — hold Cmd/Ctrl to select multiple"
-        >
-          {filterOptions?.themes.map((theme) => (
-            <option key={theme} value={theme}>
-              {theme}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label className={labelClasses}>Themes (Cmd/Ctrl-click for multiple)</label>
+          <select
+            multiple
+            size={4}
+            value={themes}
+            onChange={handleThemesChange}
+            className={selectClasses}
+          >
+            {filterOptions?.themes.map((theme) => (
+              <option key={theme} value={theme}>
+                {theme}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <p className="mt-8 font-sohne text-caption leading-caption tracking-caption text-graphite">
-        Hold Cmd (Mac) or Ctrl (Windows) to select multiple themes.
-      </p>
     </form>
   )
 }
