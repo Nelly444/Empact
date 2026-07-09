@@ -30,6 +30,10 @@ export interface ProjectCardOut {
   similarity: number | null
 }
 
+export interface ProjectDetailOut extends ProjectCardOut {
+  description_raw: string | null
+}
+
 export interface FilterOptions {
   org_names: string[]
   home_countries: string[]
