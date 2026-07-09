@@ -22,6 +22,8 @@ function ProjectDetailPage() {
       .catch((err: unknown) => {
         if (err instanceof ApiError && err.status === 404) {
           setNotFound(true)
+        } else if (err instanceof ApiError && err.status === 429) {
+          setError("You're browsing a bit fast — wait a moment and try again.")
         } else {
           setError('Could not load this project — is the backend running?')
         }

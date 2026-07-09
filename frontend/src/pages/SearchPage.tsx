@@ -2,8 +2,15 @@ import { useEffect, useState } from 'react'
 import Hero from '../components/Hero'
 import ResultCard from '../components/ResultCard'
 import SearchControls from '../components/SearchControls'
-import { api } from '../lib/api'
+import { ApiError, api } from '../lib/api'
 import type { FilterOptions, ProjectCardOut, SearchFilters } from '../lib/types'
+
+function describeError(err: unknown, fallback: string): string {
+  if (err instanceof ApiError && err.status === 429) {
+    return "You're searching a bit fast — wait a moment and try again."
+  }
+  return fallback
+}
 
 function SearchPage() {
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null)
@@ -12,8 +19,8 @@ function SearchPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    api.get<FilterOptions>('/organizations/filter-options').then(setFilterOptions).catch(() => {
-      setError('Could not load filter options — is the backend running?')
+    api.get<FilterOptions>('/organizations/filter-options').then(setFilterOptions).catch((err: unknown) => {
+      setError(describeError(err, 'Could not load filter options — is the backend running?'))
     })
   }, [])
 
@@ -23,8 +30,8 @@ function SearchPage() {
     try {
       const response = await api.post<{ results: ProjectCardOut[] }>('/search', filters)
       setResults(response.results)
-    } catch {
-      setError('Search failed — is the backend running?')
+    } catch (err) {
+      setError(describeError(err, 'Search failed — is the backend running?'))
     } finally {
       setIsSearching(false)
     }

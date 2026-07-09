@@ -43,3 +43,10 @@ def test_countries_served_filter_does_not_match_substring_country_names():
         db.delete(niger_org)
         db.delete(nigeria_org)
         db.commit()
+
+
+def test_search_rejects_oversized_query():
+    """Query text feeds a paid OpenAI embedding call, so an unbounded string
+    would let a client force expensive requests even under the rate limit."""
+    response = client.post("/search", json={"query": "x" * 501})
+    assert response.status_code == 422

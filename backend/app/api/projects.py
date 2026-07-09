@@ -17,9 +17,9 @@ def _base_query():
 
 @router.get("/projects", response_model=list[ProjectCardOut])
 def list_projects(
-    org_name: str | None = None,
-    home_country: str | None = None,
-    theme: str | None = None,
+    org_name: str | None = Query(None, max_length=200),
+    home_country: str | None = Query(None, max_length=100),
+    theme: str | None = Query(None, max_length=100),
     limit: int = Query(50, ge=1, le=100),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),

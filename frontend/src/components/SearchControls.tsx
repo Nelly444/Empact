@@ -4,7 +4,7 @@ import type { FilterOptions, SearchFilters } from '../lib/types'
 import ThemeMultiSelect from './ThemeMultiSelect'
 
 const selectClasses =
-  'w-full truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none'
+  'w-full truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2'
 
 const labelClasses = 'mb-4 block font-sohne text-caption leading-caption tracking-caption text-graphite'
 
@@ -34,8 +34,12 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-3xl px-24 pb-64">
-      <div className="flex items-center gap-8 rounded-inputs border border-dove bg-pure-white px-20 py-16 shadow-subtle">
+      <div className="flex items-center gap-8 rounded-inputs border border-dove bg-pure-white px-20 py-16 shadow-subtle focus-within:border-ink">
+        <label htmlFor="search-query" className="sr-only">
+          Describe the cause you care about
+        </label>
         <input
+          id="search-query"
           type="text"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
@@ -54,8 +58,15 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
 
       <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
         <div>
-          <label className={labelClasses}>Organization</label>
-          <select value={orgName} onChange={(event) => setOrgName(event.target.value)} className={selectClasses}>
+          <label htmlFor="filter-org" className={labelClasses}>
+            Organization
+          </label>
+          <select
+            id="filter-org"
+            value={orgName}
+            onChange={(event) => setOrgName(event.target.value)}
+            className={selectClasses}
+          >
             <option value="">All organizations</option>
             {filterOptions?.org_names.map((name) => (
               <option key={name} value={name}>
@@ -66,8 +77,11 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
         </div>
 
         <div>
-          <label className={labelClasses}>Home country</label>
+          <label htmlFor="filter-home-country" className={labelClasses}>
+            Home country
+          </label>
           <select
+            id="filter-home-country"
             value={homeCountry}
             onChange={(event) => setHomeCountry(event.target.value)}
             className={selectClasses}
@@ -82,8 +96,11 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
         </div>
 
         <div>
-          <label className={labelClasses}>Countries served</label>
+          <label htmlFor="filter-countries-served" className={labelClasses}>
+            Countries served
+          </label>
           <select
+            id="filter-countries-served"
             value={countriesServed}
             onChange={(event) => setCountriesServed(event.target.value)}
             className={selectClasses}
@@ -98,8 +115,15 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
         </div>
 
         <div>
-          <label className={labelClasses}>Themes</label>
-          <ThemeMultiSelect themes={filterOptions?.themes ?? []} selected={themes} onChange={setThemes} />
+          <label id="filter-themes-label" className={labelClasses}>
+            Themes
+          </label>
+          <ThemeMultiSelect
+            themes={filterOptions?.themes ?? []}
+            selected={themes}
+            onChange={setThemes}
+            labelledBy="filter-themes-label"
+          />
         </div>
       </div>
     </form>

@@ -5,9 +5,10 @@ interface ThemeMultiSelectProps {
   themes: string[]
   selected: string[]
   onChange: (themes: string[]) => void
+  labelledBy: string
 }
 
-function ThemeMultiSelect({ themes, selected, onChange }: ThemeMultiSelectProps) {
+function ThemeMultiSelect({ themes, selected, onChange, labelledBy }: ThemeMultiSelectProps) {
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -17,8 +18,15 @@ function ThemeMultiSelect({ themes, selected, onChange }: ThemeMultiSelectProps)
         setIsOpen(false)
       }
     }
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') setIsOpen(false)
+    }
     document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleEscape)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleEscape)
+    }
   }, [])
 
   function toggleTheme(theme: string) {
@@ -31,15 +39,21 @@ function ThemeMultiSelect({ themes, selected, onChange }: ThemeMultiSelectProps)
     <div ref={containerRef} className="relative">
       <button
         type="button"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-labelledby={labelledBy}
         onClick={() => setIsOpen((open) => !open)}
-        className="flex w-full items-center justify-between gap-8 truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none"
+        className="flex w-full items-center justify-between gap-8 truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
       >
         <span className="truncate">{label}</span>
         <ChevronDown size={16} className="shrink-0 text-graphite" />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-4 max-h-160 w-full overflow-y-auto rounded-inputs border border-dove bg-pure-white p-8 shadow-subtle">
+        <div
+          role="listbox"
+          aria-multiselectable="true"
+          className="absolute z-10 mt-4 max-h-160 w-full overflow-y-auto rounded-inputs border border-dove bg-pure-white p-8 shadow-subtle">
           {themes.map((theme) => (
             <label
               key={theme}
