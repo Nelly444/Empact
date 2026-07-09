@@ -43,9 +43,14 @@ function ThemeMultiSelect({ themes, selected, onChange }: ThemeMultiSelectProps)
           {themes.map((theme) => (
             <label
               key={theme}
-              className="flex cursor-pointer items-center gap-8 rounded-images px-8 py-4 font-sohne text-body text-ink hover:bg-fog"
+              className="flex cursor-pointer items-start gap-8 rounded-images px-8 py-4 font-sohne text-body text-ink hover:bg-fog"
             >
-              <input type="checkbox" checked={selected.includes(theme)} onChange={() => toggleTheme(theme)} />
+              <input
+                type="checkbox"
+                checked={selected.includes(theme)}
+                onChange={() => toggleTheme(theme)}
+                className="mt-4"
+              />
               {theme}
             </label>
           ))}

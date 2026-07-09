@@ -78,22 +78,22 @@ function ProjectDetailPage() {
             )}
           </div>
 
-          <h1 className="mt-24 font-signifier text-heading leading-heading tracking-heading text-ink">
+          <h1 className="mt-16 font-signifier text-heading leading-heading tracking-heading text-ink">
             {project.title}
           </h1>
 
           {project.summary_cached && (
-            <p className="mt-16 font-sohne text-body-lg leading-body-lg tracking-body-lg text-ash">
+            <p className="mt-8 font-sohne text-body-lg leading-body-lg tracking-body-lg text-ash">
               {project.summary_cached}
             </p>
           )}
 
-          <div className="mt-24">
+          <div className="mt-16">
             <FundingProgress fundingRaised={project.funding_raised} fundingGoal={project.funding_goal} />
           </div>
 
           {impact_estimate && (
-            <div className="mt-24 rounded-inputs bg-apricot-wash p-16">
+            <div className="mt-16 rounded-inputs bg-apricot-wash p-16">
               <p className="font-sohne text-body text-ink">{impact_estimate.summary}</p>
               {impact_estimate.funding_velocity_per_day !== null && (
                 <p className="mt-8 font-sohne text-caption leading-caption tracking-caption text-ink">

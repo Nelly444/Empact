@@ -36,7 +36,7 @@ function SearchPage() {
       <SearchControls filterOptions={filterOptions} isSearching={isSearching} onSearch={handleSearch} />
 
       {error && (
-        <p className="mx-auto max-w-3xl px-24 pb-64 text-center font-sohne text-body text-rust">
+        <p className="mx-auto max-w-3xl px-24 pb-96 text-center font-sohne text-body text-rust">
           {error}
         </p>
       )}

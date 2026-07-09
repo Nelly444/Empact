@@ -24,9 +24,9 @@ function ResultCard({ project }: ResultCardProps) {
       </div>
 
       <Link to={`/projects/${project.id}`} className="mt-16 block">
-        <h3 className="font-signifier text-heading-sm leading-heading-sm tracking-heading-sm text-ink hover:underline">
+        <h2 className="font-sohne text-heading-sm font-medium leading-heading-sm tracking-heading-sm text-ink hover:underline">
           {project.title}
-        </h3>
+        </h2>
       </Link>
 
       {project.summary_cached && (
