@@ -95,14 +95,18 @@ function ProjectDetailPage() {
           </div>
 
           {impact_estimate && (
-            <div className="mt-16 rounded-inputs bg-apricot-wash p-16">
-              <p className="font-sohne text-body text-ink">{impact_estimate.summary}</p>
+            <div className="mt-16">
+              <div className="rounded-inputs bg-apricot-wash p-16">
+                <p className="font-sohne text-body text-ink">{impact_estimate.summary}</p>
+              </div>
               {impact_estimate.funding_velocity_per_day !== null && (
-                <p className="mt-8 font-sohne text-caption leading-caption tracking-caption text-ink">
-                  Raising about {Math.round(impact_estimate.funding_velocity_per_day).toLocaleString()} USD/day
-                  {impact_estimate.days_to_fully_funded !== null &&
-                    ` — about ${Math.ceil(impact_estimate.days_to_fully_funded)} days to fully funded`}
-                </p>
+                <div className="mt-8 rounded-inputs bg-sky-wash p-16">
+                  <p className="font-sohne text-caption leading-caption tracking-caption text-ink">
+                    Raising about {Math.round(impact_estimate.funding_velocity_per_day).toLocaleString()} USD/day
+                    {impact_estimate.days_to_fully_funded !== null &&
+                      ` — about ${Math.ceil(impact_estimate.days_to_fully_funded)} days to fully funded`}
+                  </p>
+                </div>
               )}
             </div>
           )}
