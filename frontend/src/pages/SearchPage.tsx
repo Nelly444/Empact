@@ -9,6 +9,9 @@ function describeError(err: unknown, fallback: string): string {
   if (err instanceof ApiError && err.status === 429) {
     return "You're searching a bit fast — wait a moment and try again."
   }
+  if (err instanceof ApiError && err.status === 422) {
+    return 'Try describing your cause in a bit more detail.'
+  }
   return fallback
 }
 

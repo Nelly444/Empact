@@ -1,11 +1,19 @@
 from fastapi.testclient import TestClient
 
+from app.api.search import _passes_similarity_threshold
 from app.db.session import get_session_factory
 from app.main import app
 from app.models.organization import Organization
 from app.models.project import Project
 
 client = TestClient(app)
+
+
+def test_similarity_threshold_filters_low_scores():
+    """Empirically, garbage queries score <=0.21 and genuine queries score
+    >=0.32 against the live dataset - the threshold sits between them."""
+    assert not _passes_similarity_threshold(0.21)
+    assert _passes_similarity_threshold(0.32)
 
 
 def test_countries_served_filter_does_not_match_substring_country_names():
@@ -50,3 +58,22 @@ def test_search_rejects_oversized_query():
     would let a client force expensive requests even under the rate limit."""
     response = client.post("/search", json={"query": "x" * 501})
     assert response.status_code == 422
+
+
+def test_search_rejects_single_character_query():
+    """A 1-character query has no real content, so it shouldn't be allowed to
+    trigger a billed embedding call at all."""
+    response = client.post("/search", json={"query": "f"})
+    assert response.status_code == 422
+
+
+def test_search_rejects_null_byte_in_query():
+    response = client.post("/search", json={"query": "hi\x00there"})
+    assert response.status_code == 422
+
+
+def test_search_treats_whitespace_only_query_as_no_query():
+    """Whitespace-only input shouldn't error, and shouldn't burn an embedding
+    call either - it should fall back to plain structured filtering."""
+    response = client.post("/search", json={"query": "   ", "limit": 1})
+    assert response.status_code == 200

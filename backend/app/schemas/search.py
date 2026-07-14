@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.schemas.project import ProjectCardOut
 
@@ -10,6 +10,23 @@ class SearchRequest(BaseModel):
     countries_served: str | None = Field(None, max_length=100)
     themes: list[str] | None = Field(None, max_length=50)
     limit: int = Field(20, ge=1, le=100)
+
+    @field_validator("query")
+    @classmethod
+    def normalize_query(cls, value: str | None) -> str | None:
+        """Strip and validate before this ever reaches the paid embedding API -
+        a raw "f" or "   " would otherwise still trigger a billed OpenAI call
+        for something with no real content."""
+        if value is None:
+            return None
+        stripped = value.strip()
+        if "\x00" in stripped:
+            raise ValueError("query must not contain null bytes")
+        if not stripped:
+            return None
+        if len(stripped) < 2:
+            raise ValueError("query must be at least 2 characters")
+        return stripped
 
 
 class SearchResponse(BaseModel):
