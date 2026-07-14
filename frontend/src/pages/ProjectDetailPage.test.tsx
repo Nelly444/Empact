@@ -75,6 +75,6 @@ describe('ProjectDetailPage', () => {
     mockedApi.get.mockRejectedValue(new ApiError(500, 'server error'))
     renderAt('/projects/1')
 
-    expect(await screen.findByText(/is the backend running/i)).toBeInTheDocument()
+    expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument()
   })
 })

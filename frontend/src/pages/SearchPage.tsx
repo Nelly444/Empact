@@ -23,7 +23,7 @@ function SearchPage() {
 
   useEffect(() => {
     api.get<FilterOptions>('/organizations/filter-options').then(setFilterOptions).catch((err: unknown) => {
-      setError(describeError(err, 'Could not load filter options — is the backend running?'))
+      setError(describeError(err, 'Something went wrong loading filters. Please try again in a moment.'))
     })
   }, [])
 
@@ -34,7 +34,7 @@ function SearchPage() {
       const response = await api.post<{ results: ProjectCardOut[] }>('/search', filters)
       setResults(response.results)
     } catch (err) {
-      setError(describeError(err, 'Search failed — is the backend running?'))
+      setError(describeError(err, 'Something went wrong with your search. Please try again in a moment.'))
     } finally {
       setIsSearching(false)
     }

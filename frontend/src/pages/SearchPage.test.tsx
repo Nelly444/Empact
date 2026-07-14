@@ -100,7 +100,7 @@ describe('SearchPage', () => {
     expect(await screen.findByText(/bit more detail/i)).toBeInTheDocument()
   })
 
-  it('shows the generic backend-down message for other failures', async () => {
+  it('shows a generic message for other failures', async () => {
     mockedApi.post.mockRejectedValue(new ApiError(500, 'server error'))
     const user = userEvent.setup()
     renderPage()
@@ -108,6 +108,6 @@ describe('SearchPage', () => {
     await waitFor(() => expect(mockedApi.get).toHaveBeenCalled())
     await user.click(screen.getByLabelText('Search'))
 
-    expect(await screen.findByText(/is the backend running/i)).toBeInTheDocument()
+    expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument()
   })
 })

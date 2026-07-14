@@ -25,7 +25,7 @@ function ProjectDetailPage() {
         } else if (err instanceof ApiError && err.status === 429) {
           setError("You're browsing a bit fast — wait a moment and try again.")
         } else {
-          setError('Could not load this project — is the backend running?')
+          setError('Something went wrong loading this project. Please try again in a moment.')
         }
       })
   }, [projectId])
