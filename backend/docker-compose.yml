@@ -14,6 +14,11 @@ services:
   backend:
     build: .
     env_file: .env
+    environment:
+      # .env's DATABASE_URL targets localhost:5433 for host-mode `uvicorn --reload`
+      # (reaching db's published port). From inside this container, localhost is
+      # the container itself, so it must use the db service's name and internal port.
+      DATABASE_URL: postgresql+psycopg2://charity:charity@db:5432/charity_finder
     depends_on:
       - db
     ports:

@@ -6,7 +6,7 @@ import ThemeMultiSelect from './ThemeMultiSelect'
 const selectClasses =
   'w-full truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2'
 
-const labelClasses = 'mb-4 block font-sohne text-caption leading-caption tracking-caption text-graphite'
+const labelClasses = 'mb-4 block pl-16 font-sohne text-caption leading-caption tracking-caption text-graphite'
 
 interface SearchControlsProps {
   filterOptions: FilterOptions | null
