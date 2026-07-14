@@ -43,7 +43,7 @@ function ThemeMultiSelect({ themes, selected, onChange, labelledBy }: ThemeMulti
         aria-expanded={isOpen}
         aria-labelledby={labelledBy}
         onClick={() => setIsOpen((open) => !open)}
-        className="flex w-full items-center justify-between gap-8 truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
+        className="flex h-40 w-full items-center justify-between gap-8 truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
       >
         <span className="truncate">{label}</span>
         <ChevronDown size={16} className="shrink-0 text-graphite" />
