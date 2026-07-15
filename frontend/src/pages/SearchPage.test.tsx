@@ -53,9 +53,20 @@ beforeEach(() => {
   mockedApi.get.mockReset()
   mockedApi.post.mockReset()
   mockedApi.get.mockResolvedValue(FILTER_OPTIONS)
+  // SearchPage now auto-runs a browse search on mount, so every test's
+  // initial render fires a POST even before it sets up its own scenario.
+  mockedApi.post.mockResolvedValue({ results: [] })
 })
 
 describe('SearchPage', () => {
+  it('auto-loads and shows real results on mount, with no click required', async () => {
+    mockedApi.post.mockResolvedValue({ results: [PROJECT] })
+    renderPage()
+
+    expect(await screen.findByText('Learning Centers for Rural Afghan Women')).toBeInTheDocument()
+    expect(mockedApi.post).toHaveBeenCalledWith('/search', {})
+  })
+
   it('renders result cards after a successful search', async () => {
     mockedApi.post.mockResolvedValue({ results: [PROJECT] })
     const user = userEvent.setup()

@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Hero from '../components/Hero'
 import ResultCard from '../components/ResultCard'
@@ -32,8 +33,6 @@ function SearchPage() {
       })
   }
 
-  useEffect(loadFilterOptions, [])
-
   async function handleSearch(filters: SearchFilters) {
     setIsSearching(true)
     setError(null)
@@ -46,6 +45,14 @@ function SearchPage() {
       setIsSearching(false)
     }
   }
+
+  useEffect(() => {
+    loadFilterOptions()
+    // Show real projects immediately on landing instead of a blank page
+    // below the search bar — no query means no paid embedding call, just
+    // a plain browse of the cached catalog.
+    handleSearch({})
+  }, [])
 
   return (
     <main className="min-h-[calc(100vh-64px)] bg-fog">
@@ -65,6 +72,12 @@ function SearchPage() {
         <p className="mx-auto max-w-3xl px-24 pb-96 text-center font-sohne text-body text-rust">
           {error}
         </p>
+      )}
+
+      {isSearching && !results && (
+        <div className="flex justify-center pb-96">
+          <Loader2 size={24} className="animate-spin text-graphite" />
+        </div>
       )}
 
       {results && (
