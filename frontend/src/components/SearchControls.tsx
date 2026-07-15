@@ -50,7 +50,7 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
           type="submit"
           disabled={isSearching}
           aria-label="Search"
-          className="flex h-40 w-40 shrink-0 items-center justify-center rounded-full bg-ink text-pure-white transition-opacity disabled:opacity-50"
+          className="flex h-40 w-40 shrink-0 items-center justify-center rounded-full bg-rust text-pure-white transition-opacity disabled:opacity-50"
         >
           {isSearching ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
         </button>

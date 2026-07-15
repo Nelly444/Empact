@@ -5,7 +5,7 @@ const GITHUB_URL = 'https://github.com/Nelly444/Empact'
 
 function NavBar() {
   return (
-    <header className="sticky top-0 z-10 flex h-64 items-center justify-between border-b border-dove bg-pure-white px-24">
+    <header className="sticky top-0 z-10 flex h-64 items-center justify-between border-b-2 border-rust bg-pure-white px-24">
       <Link
         to="/"
         className="font-sohne text-subheading font-medium tracking-subheading text-ink"

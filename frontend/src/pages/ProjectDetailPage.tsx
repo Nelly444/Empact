@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import FundingProgress from '../components/FundingProgress'
 import OrgBadge from '../components/OrgBadge'
+import ThemeTag from '../components/ThemeTag'
 import { ApiError, api } from '../lib/api'
 import type { ProjectDetailOut } from '../lib/types'
 
@@ -73,11 +74,7 @@ function ProjectDetailPage() {
         <div className="mt-24 rounded-cards bg-pure-white p-24 shadow-subtle sm:p-32">
           <div className="flex items-start justify-between gap-16">
             <OrgBadge organization={organization} />
-            {project.theme && (
-              <span className="shrink-0 rounded-tags border border-dove px-12 py-4 font-sohne text-caption text-graphite">
-                {project.theme}
-              </span>
-            )}
+            {project.theme && <ThemeTag theme={project.theme} />}
           </div>
 
           <h1 className="mt-16 font-signifier text-heading leading-heading tracking-heading text-ink">

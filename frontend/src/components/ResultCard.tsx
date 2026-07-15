@@ -3,6 +3,7 @@ import { formatPercent } from '../lib/format'
 import type { ProjectCardOut } from '../lib/types'
 import FundingProgress from './FundingProgress'
 import OrgBadge from './OrgBadge'
+import ThemeTag from './ThemeTag'
 
 interface ResultCardProps {
   project: ProjectCardOut
@@ -16,11 +17,7 @@ function ResultCard({ project }: ResultCardProps) {
       <div className="flex items-start justify-between gap-16">
         <OrgBadge organization={organization} />
 
-        {project.theme && (
-          <span className="shrink-0 rounded-tags border border-dove px-12 py-4 font-sohne text-caption text-graphite">
-            {project.theme}
-          </span>
-        )}
+        {project.theme && <ThemeTag theme={project.theme} />}
       </div>
 
       <Link to={`/projects/${project.id}`} className="mt-16 block">
