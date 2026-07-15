@@ -17,15 +17,22 @@ function describeError(err: unknown, fallback: string): string {
 
 function SearchPage() {
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null)
+  const [filterOptionsError, setFilterOptionsError] = useState<string | null>(null)
   const [results, setResults] = useState<ProjectCardOut[] | null>(null)
   const [isSearching, setIsSearching] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    api.get<FilterOptions>('/organizations/filter-options').then(setFilterOptions).catch((err: unknown) => {
-      setError(describeError(err, 'Something went wrong loading filters. Please try again in a moment.'))
-    })
-  }, [])
+  function loadFilterOptions() {
+    setFilterOptionsError(null)
+    api
+      .get<FilterOptions>('/organizations/filter-options')
+      .then(setFilterOptions)
+      .catch((err: unknown) => {
+        setFilterOptionsError(describeError(err, 'Something went wrong loading filters.'))
+      })
+  }
+
+  useEffect(loadFilterOptions, [])
 
   async function handleSearch(filters: SearchFilters) {
     setIsSearching(true)
@@ -44,6 +51,15 @@ function SearchPage() {
     <main className="min-h-[calc(100vh-64px)] bg-fog">
       <Hero />
       <SearchControls filterOptions={filterOptions} isSearching={isSearching} onSearch={handleSearch} />
+
+      {filterOptionsError && (
+        <p className="mx-auto max-w-3xl px-24 pb-32 text-center font-sohne text-body text-rust">
+          {filterOptionsError}{' '}
+          <button type="button" onClick={loadFilterOptions} className="underline hover:text-ink">
+            Retry
+          </button>
+        </p>
+      )}
 
       {error && (
         <p className="mx-auto max-w-3xl px-24 pb-96 text-center font-sohne text-body text-rust">

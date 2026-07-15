@@ -110,4 +110,22 @@ describe('SearchPage', () => {
 
     expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument()
   })
+
+  it('shows a Retry control when filter options fail to load, and recovers on click', async () => {
+    mockedApi.get.mockReset()
+    mockedApi.get.mockRejectedValueOnce(new ApiError(500, 'server error'))
+    mockedApi.get.mockResolvedValueOnce(FILTER_OPTIONS)
+    const user = userEvent.setup()
+    renderPage()
+
+    expect(await screen.findByText(/something went wrong loading filters/i)).toBeInTheDocument()
+    const retryButton = screen.getByRole('button', { name: 'Retry' })
+
+    await user.click(retryButton)
+
+    await waitFor(() =>
+      expect(screen.queryByText(/something went wrong loading filters/i)).not.toBeInTheDocument(),
+    )
+    expect(mockedApi.get).toHaveBeenCalledTimes(2)
+  })
 })

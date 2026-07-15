@@ -33,4 +33,40 @@ describe('api', () => {
     expect(error).toBeInstanceOf(ApiError)
     expect((error as ApiError).status).toBe(429)
   })
+
+  it('retries a GET after a network-level failure and succeeds', async () => {
+    vi.useFakeTimers()
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError('Failed to fetch'))
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ org_names: [] }) })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const promise = api.get('/organizations/filter-options')
+    await vi.runAllTimersAsync()
+    await expect(promise).resolves.toEqual({ org_names: [] })
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    vi.useRealTimers()
+  })
+
+  it('gives up on a GET after exhausting retries and surfaces the network error', async () => {
+    vi.useFakeTimers()
+    const fetchMock = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const promise = api.get('/organizations/filter-options')
+    const assertion = expect(promise).rejects.toThrow('Failed to fetch')
+    await vi.runAllTimersAsync()
+    await assertion
+    expect(fetchMock).toHaveBeenCalledTimes(3) // initial attempt + 2 retries
+    vi.useRealTimers()
+  })
+
+  it('does not retry a POST after a network-level failure', async () => {
+    const fetchMock = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'))
+    vi.stubGlobal('fetch', fetchMock)
+
+    await expect(api.post('/search', { query: 'water' })).rejects.toThrow('Failed to fetch')
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
 })
