@@ -21,6 +21,8 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
   const [countriesServed, setCountriesServed] = useState('')
   const [themes, setThemes] = useState<string[]>([])
 
+  const hasActiveFilters = orgName !== '' || homeCountry !== '' || countriesServed !== '' || themes.length > 0
+
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
     onSearch({
@@ -30,6 +32,14 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
       countries_served: countriesServed || undefined,
       themes: themes.length > 0 ? themes : undefined,
     })
+  }
+
+  function handleClearFilters() {
+    setOrgName('')
+    setHomeCountry('')
+    setCountriesServed('')
+    setThemes([])
+    onSearch({ query: query.trim() || undefined })
   }
 
   return (
@@ -126,6 +136,16 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
           />
         </div>
       </div>
+
+      {hasActiveFilters && (
+        <button
+          type="button"
+          onClick={handleClearFilters}
+          className="mt-8 pl-16 font-sohne text-caption text-ink underline transition-colors hover:text-rust"
+        >
+          Clear filters
+        </button>
+      )}
     </form>
   )
 }
