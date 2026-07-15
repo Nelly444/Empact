@@ -20,11 +20,6 @@ export function initials(name: string): string {
   return (first + second).toUpperCase()
 }
 
-/**
- * Organization homepage/logo URLs come from GlobalGiving's API, not our own
- * data — only allow http(s) so a compromised or malformed record can't be
- * rendered as a javascript:/data: URI in an href or img src.
- */
 export function safeHttpUrl(url: string | null): string | undefined {
   if (!url) return undefined
   try {
