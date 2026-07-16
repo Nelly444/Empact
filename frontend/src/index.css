@@ -91,24 +91,38 @@
      colors never have to blend into each other (a direct Rust/Teal blend
      desaturates into a muddy olive at the midpoint); card entrance is a
      quick fade+rise applied once on mount. */
-  --animate-blob-a: blob-a 10s ease-in-out infinite;
-  --animate-blob-b: blob-b 13s ease-in-out infinite;
-  --animate-blob-c: blob-c 9s ease-in-out infinite;
+  --animate-blob-a: blob-a 12s ease-in-out infinite;
+  --animate-blob-b: blob-b 15s ease-in-out infinite;
+  --animate-blob-c: blob-c 11s ease-in-out infinite;
+  --animate-blob-d: blob-d 13.5s ease-in-out infinite;
   --animate-card-in: card-in 0.45s ease-out both;
   --animate-dropdown-in: dropdown-in 0.15s ease-out both;
 }
 
+/* Each blob loops through a distinct 4-point path (not a straight back-and-forth
+   on one axis) so it reads as an independent floating shape rather than the
+   whole background pulsing in and out together. */
 @keyframes blob-a {
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
-  50% { transform: translate(30%, 35%) scale(1.35); opacity: 0.85; }
+  25% { transform: translate(28%, 8%) scale(1.2); opacity: 0.75; }
+  50% { transform: translate(18%, 34%) scale(1.35); opacity: 0.85; }
+  75% { transform: translate(-8%, 20%) scale(1.1); opacity: 0.65; }
 }
 @keyframes blob-b {
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
-  50% { transform: translate(-32%, 25%) scale(1.4); opacity: 0.85; }
+  25% { transform: translate(-10%, -22%) scale(1.15); opacity: 0.7; }
+  50% { transform: translate(-34%, 6%) scale(1.4); opacity: 0.85; }
+  75% { transform: translate(-14%, 26%) scale(1.15); opacity: 0.65; }
 }
 @keyframes blob-c {
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.35; }
-  50% { transform: translate(25%, -32%) scale(0.7); opacity: 0.6; }
+  33% { transform: translate(22%, -18%) scale(0.85); opacity: 0.5; }
+  66% { transform: translate(-12%, -28%) scale(0.65); opacity: 0.6; }
+}
+@keyframes blob-d {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  33% { transform: translate(-18%, 22%) scale(1.15); opacity: 0.5; }
+  66% { transform: translate(20%, 12%) scale(0.85); opacity: 0.55; }
 }
 @keyframes card-in {
   from { opacity: 0; transform: translateY(12px); }
