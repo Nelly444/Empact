@@ -20,6 +20,18 @@ def test_marginal_dollar_framing_normal_case():
     assert "10.0%" in summary
 
 
+def test_marginal_dollar_framing_switches_to_donation_count_when_coverage_underflows():
+    # A remaining need this large makes $5 round to "~0.0%" at any sane
+    # precision - the common case for real charity goals in the tens of
+    # thousands+, which is exactly why this branch exists.
+    project = Project(funding_goal=100_000.0, funding_raised=0.0)
+    remaining_need, coverage_pct, summary = marginal_dollar_framing(project, donation=5.0)
+    assert remaining_need == 100_000.0
+    assert coverage_pct == pytest.approx(0.005)
+    assert "0.0%" not in summary
+    assert "20,000 donations of $5" in summary
+
+
 def test_marginal_dollar_framing_goal_already_met():
     project = Project(funding_goal=100.0, funding_raised=150.0)
     remaining_need, coverage_pct, summary = marginal_dollar_framing(project, donation=5.0)

@@ -26,10 +26,22 @@ def marginal_dollar_framing(project: Project, donation: float = EXAMPLE_DONATION
         return remaining_need, 0.0, "This project's funding goal has already been met."
 
     coverage_pct = (donation / remaining_need) * 100
-    summary = (
-        f"A ${donation:g} donation would cover ~{coverage_pct:.1f}% of this "
-        "project's remaining funding need."
-    )
+    if coverage_pct >= 0.1:
+        summary = (
+            f"A ${donation:g} donation would cover ~{coverage_pct:.1f}% of this "
+            "project's remaining funding need."
+        )
+    else:
+        # For large remaining needs (the common case - most goals are in the
+        # tens of thousands+), a $5 donation rounds to "~0.0%" at any sane
+        # precision, which reads as broken rather than just small. Flipping
+        # to "how many donations this size" keeps the same real inputs
+        # (remaining_need / donation) but stays a legible non-zero number.
+        donations_needed = remaining_need / donation
+        summary = (
+            f"It would take about {donations_needed:,.0f} donations of ${donation:g} "
+            "to cover this project's remaining funding need."
+        )
     return remaining_need, coverage_pct, summary
 
 
