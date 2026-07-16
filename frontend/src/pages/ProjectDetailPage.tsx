@@ -65,13 +65,13 @@ function ProjectDetailPage() {
       <div className="mx-auto max-w-3xl">
         <Link
           to="/"
-          className="inline-flex items-center gap-8 font-sohne text-caption text-graphite transition-colors hover:text-ink"
+          className="group inline-flex items-center gap-8 font-sohne text-caption text-graphite transition-colors hover:text-ink"
         >
-          <ArrowLeft size={16} />
+          <ArrowLeft size={16} className="transition-transform duration-150 group-hover:-translate-x-1" />
           Back to search
         </Link>
 
-        <div className="mt-24 rounded-cards bg-pure-white p-24 shadow-subtle sm:p-32">
+        <div className="animate-card-in mt-24 rounded-cards bg-pure-white p-24 shadow-subtle sm:p-32">
           <div className="flex items-start justify-between gap-16">
             <OrgBadge organization={organization} />
             {project.theme && <ThemeTag theme={project.theme} />}

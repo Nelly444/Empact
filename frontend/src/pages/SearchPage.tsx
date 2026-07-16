@@ -81,15 +81,15 @@ function SearchPage() {
       )}
 
       {results && (
-        <div className="mx-auto max-w-3xl px-24 pb-96">
+        <div className="mx-auto max-w-6xl px-24 pb-96">
           {results.length === 0 ? (
             <p className="text-center font-sohne text-body text-ash">
               No projects matched — try a different description or fewer filters.
             </p>
           ) : (
-            <div className="flex flex-col gap-16">
-              {results.map((project) => (
-                <ResultCard key={project.id} project={project} />
+            <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+              {results.map((project, index) => (
+                <ResultCard key={project.id} project={project} index={index} />
               ))}
             </div>
           )}

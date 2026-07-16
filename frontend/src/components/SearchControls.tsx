@@ -4,7 +4,7 @@ import type { FilterOptions, SearchFilters } from '../lib/types'
 import ThemeMultiSelect from './ThemeMultiSelect'
 
 const selectClasses =
-  'w-full truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2'
+  'w-full truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink transition-colors focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2'
 
 const labelClasses = 'mb-4 block pl-16 font-sohne text-caption leading-caption tracking-caption text-graphite'
 
@@ -43,8 +43,8 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto max-w-3xl px-24 pb-64">
-      <div className="flex items-center gap-8 rounded-inputs border border-dove bg-pure-white px-20 py-16 shadow-subtle focus-within:border-ink">
+    <form onSubmit={handleSubmit} className="mx-auto max-w-6xl px-24 pb-64">
+      <div className="mx-auto flex max-w-2xl items-center gap-8 rounded-inputs border border-dove bg-pure-white px-20 py-16 shadow-subtle transition-colors focus-within:border-teal">
         <label htmlFor="search-query" className="sr-only">
           Describe the cause you care about
         </label>
@@ -60,7 +60,7 @@ function SearchControls({ filterOptions, isSearching, onSearch }: SearchControls
           type="submit"
           disabled={isSearching}
           aria-label="Search"
-          className="flex h-40 w-40 shrink-0 items-center justify-center rounded-full bg-rust text-pure-white transition-opacity disabled:opacity-50"
+          className="flex h-40 w-40 shrink-0 items-center justify-center rounded-full bg-rust text-pure-white transition-transform duration-150 hover:scale-110 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
         >
           {isSearching ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
         </button>

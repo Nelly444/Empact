@@ -12,7 +12,10 @@
   --color-dove: #a8a29b;
   --color-slate: #8b8c8d;
   --color-obsidian: #000000;
-  --color-rust: #5d2a1a;
+  --color-rust: #c1440e;
+  --color-rust-dark: #9c3609;
+  --color-teal: #0f6e64;
+  --color-teal-dark: #0a4d46;
   --color-apricot-wash: #fbe1d1;
   --color-sky-wash: #d3e3fc;
 
@@ -82,6 +85,38 @@
 
   /* Shadows */
   --shadow-subtle: rgba(4, 23, 43, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
+  --shadow-lifted: rgba(4, 23, 43, 0.08) 0px 0px 0px 1px, rgba(0, 0, 0, 0.16) 0px 24px 32px -8px, rgba(0, 0, 0, 0.12) 0px 10px 14px -6px;
+
+  /* Animations — hero blob mesh drifts slowly and independently per blob so
+     colors never have to blend into each other (a direct Rust/Teal blend
+     desaturates into a muddy olive at the midpoint); card entrance is a
+     quick fade+rise applied once on mount. */
+  --animate-blob-a: blob-a 18s ease-in-out infinite;
+  --animate-blob-b: blob-b 22s ease-in-out infinite;
+  --animate-blob-c: blob-c 26s ease-in-out infinite;
+  --animate-card-in: card-in 0.45s ease-out both;
+  --animate-dropdown-in: dropdown-in 0.15s ease-out both;
+}
+
+@keyframes blob-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6%, 8%) scale(1.15); }
+}
+@keyframes blob-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-8%, 6%) scale(1.2); }
+}
+@keyframes blob-c {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5%, -8%) scale(0.9); }
+}
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dropdown-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* Layout constants — not Tailwind utility namespaces, referenced directly via var() */

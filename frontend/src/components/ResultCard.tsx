@@ -7,13 +7,17 @@ import ThemeTag from './ThemeTag'
 
 interface ResultCardProps {
   project: ProjectCardOut
+  index?: number
 }
 
-function ResultCard({ project }: ResultCardProps) {
+function ResultCard({ project, index = 0 }: ResultCardProps) {
   const { organization, impact_estimate } = project
 
   return (
-    <div className="rounded-cards bg-pure-white p-24 shadow-subtle">
+    <div
+      className="animate-card-in rounded-cards bg-pure-white p-24 shadow-subtle transition-[transform,box-shadow] duration-200 hover:-translate-y-2 hover:shadow-lifted"
+      style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
+    >
       <div className="flex items-start justify-between gap-16">
         <OrgBadge organization={organization} />
 

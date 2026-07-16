@@ -5,16 +5,16 @@ const LINKEDIN_URL = 'https://www.linkedin.com/in/nelson-supriyasilp/'
 
 function Footer() {
   return (
-    <footer className="border-t border-dove bg-fog px-24 py-32">
-      <div className="mx-auto flex max-w-3xl items-center justify-between">
-        <p className="font-sohne text-caption leading-caption tracking-caption text-graphite">Empact</p>
+    <footer className="border-t-2 border-teal bg-ink px-24 py-32">
+      <div className="mx-auto flex max-w-5xl items-center justify-between">
+        <p className="font-sohne text-caption leading-caption tracking-caption text-dove">Empact</p>
         <div className="flex items-center gap-16">
           <a
             href={GITHUB_PROFILE_URL}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub profile"
-            className="text-graphite transition-colors hover:text-ink"
+            className="text-dove transition-all duration-150 hover:scale-110 hover:text-pure-white"
           >
             <GithubIcon />
           </a>
@@ -23,7 +23,7 @@ function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn profile"
-            className="text-graphite transition-colors hover:text-ink"
+            className="text-dove transition-all duration-150 hover:scale-110 hover:text-pure-white"
           >
             <LinkedinIcon />
           </a>

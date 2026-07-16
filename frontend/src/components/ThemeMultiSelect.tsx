@@ -46,18 +46,21 @@ function ThemeMultiSelect({ themes, selected, onChange, labelledBy }: ThemeMulti
         className="flex h-40 w-full items-center justify-between gap-8 truncate rounded-inputs border border-dove bg-pure-white px-16 py-8 font-sohne text-body text-ink focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2"
       >
         <span className="truncate">{label}</span>
-        <ChevronDown size={16} className="shrink-0 text-graphite" />
+        <ChevronDown
+          size={16}
+          className={`shrink-0 text-graphite transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {isOpen && (
         <div
           role="listbox"
           aria-multiselectable="true"
-          className="absolute z-10 mt-4 max-h-160 w-full overflow-y-auto rounded-inputs border border-dove bg-pure-white p-8 shadow-subtle">
+          className="animate-dropdown-in absolute z-10 mt-4 max-h-160 w-full origin-top overflow-y-auto rounded-inputs border border-dove bg-pure-white p-8 shadow-subtle">
           {themes.map((theme) => (
             <label
               key={theme}
-              className="flex cursor-pointer items-start gap-8 rounded-images px-8 py-4 font-sohne text-body text-ink hover:bg-fog"
+              className="flex cursor-pointer items-start gap-8 rounded-images px-8 py-4 font-sohne text-body text-ink transition-colors hover:bg-fog"
             >
               <input
                 type="checkbox"
