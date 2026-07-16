@@ -91,24 +91,24 @@
      colors never have to blend into each other (a direct Rust/Teal blend
      desaturates into a muddy olive at the midpoint); card entrance is a
      quick fade+rise applied once on mount. */
-  --animate-blob-a: blob-a 18s ease-in-out infinite;
-  --animate-blob-b: blob-b 22s ease-in-out infinite;
-  --animate-blob-c: blob-c 26s ease-in-out infinite;
+  --animate-blob-a: blob-a 10s ease-in-out infinite;
+  --animate-blob-b: blob-b 13s ease-in-out infinite;
+  --animate-blob-c: blob-c 9s ease-in-out infinite;
   --animate-card-in: card-in 0.45s ease-out both;
   --animate-dropdown-in: dropdown-in 0.15s ease-out both;
 }
 
 @keyframes blob-a {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(6%, 8%) scale(1.15); }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
+  50% { transform: translate(30%, 35%) scale(1.35); opacity: 0.85; }
 }
 @keyframes blob-b {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-8%, 6%) scale(1.2); }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.55; }
+  50% { transform: translate(-32%, 25%) scale(1.4); opacity: 0.85; }
 }
 @keyframes blob-c {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(5%, -8%) scale(0.9); }
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+  50% { transform: translate(25%, -32%) scale(0.7); opacity: 0.6; }
 }
 @keyframes card-in {
   from { opacity: 0; transform: translateY(12px); }
