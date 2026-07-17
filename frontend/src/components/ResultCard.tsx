@@ -1,5 +1,6 @@
+import { ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { formatPercent } from '../lib/format'
+import { formatPercent, safeHttpUrl } from '../lib/format'
 import type { ProjectCardOut } from '../lib/types'
 import FundingProgress from './FundingProgress'
 import OrgBadge from './OrgBadge'
@@ -12,6 +13,7 @@ interface ResultCardProps {
 
 function ResultCard({ project, index = 0 }: ResultCardProps) {
   const { organization, impact_estimate } = project
+  const donateUrl = safeHttpUrl(project.project_url)
 
   return (
     <div
@@ -63,6 +65,18 @@ function ResultCard({ project, index = 0 }: ResultCardProps) {
         <p className="mt-8 font-sohne text-caption text-graphite">
           {formatPercent(project.similarity * 100)} match
         </p>
+      )}
+
+      {donateUrl && (
+        <a
+          href={donateUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-16 flex items-center justify-center gap-8 rounded-buttons bg-rust px-20 py-8 font-sohne text-body font-medium text-pure-white transition-transform duration-150 hover:scale-[1.02] active:scale-95"
+        >
+          Donate on GlobalGiving
+          <ExternalLink size={16} />
+        </a>
       )}
     </div>
   )

@@ -25,6 +25,7 @@ class ProjectCardOut(BaseModel):
     summary_cached: str | None
     funding_goal: float | None
     funding_raised: float | None
+    project_url: str | None
     impact_estimate: ImpactEstimateOut | None = None
     similarity: float | None = None
 

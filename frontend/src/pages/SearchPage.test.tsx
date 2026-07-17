@@ -37,6 +37,7 @@ const PROJECT: ProjectCardOut = {
   summary_cached: 'A summary.',
   funding_goal: 98000,
   funding_raised: 67364,
+  project_url: 'https://www.globalgiving.org/projects/learning-centers-afghan-women/',
   impact_estimate: null,
   similarity: 0.52,
 }

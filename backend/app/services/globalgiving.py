@@ -67,4 +67,5 @@ def parse_project(raw: dict) -> dict:
         "description_raw": raw.get("summary") or raw.get("need"),
         "funding_goal": raw.get("goal"),
         "funding_raised": raw.get("funding"),
+        "project_url": raw.get("projectLink"),
     }

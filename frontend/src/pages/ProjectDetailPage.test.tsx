@@ -29,6 +29,7 @@ const PROJECT: ProjectDetailOut = {
   summary_cached: 'A summary.',
   funding_goal: 98000,
   funding_raised: 67364,
+  project_url: 'https://www.globalgiving.org/projects/learning-centers-afghan-women/',
   impact_estimate: null,
   similarity: null,
   description_raw: 'The full raw description.',
@@ -55,6 +56,8 @@ describe('ProjectDetailPage', () => {
 
     expect(await screen.findByRole('heading', { name: PROJECT.title })).toBeInTheDocument()
     expect(screen.getByText('The full raw description.')).toBeInTheDocument()
+    const link = screen.getByRole('link', { name: /donate on globalgiving/i })
+    expect(link).toHaveAttribute('href', PROJECT.project_url)
   })
 
   it('shows a not-found message on a 404', async () => {

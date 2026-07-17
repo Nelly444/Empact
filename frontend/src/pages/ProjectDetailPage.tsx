@@ -1,10 +1,11 @@
-import { ArrowLeft, Loader2 } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import FundingProgress from '../components/FundingProgress'
 import OrgBadge from '../components/OrgBadge'
 import ThemeTag from '../components/ThemeTag'
 import { ApiError, api } from '../lib/api'
+import { safeHttpUrl } from '../lib/format'
 import type { ProjectDetailOut } from '../lib/types'
 
 function ProjectDetailPage() {
@@ -59,6 +60,7 @@ function ProjectDetailPage() {
   }
 
   const { organization, impact_estimate } = project
+  const donateUrl = safeHttpUrl(project.project_url)
 
   return (
     <main className="min-h-[calc(100vh-64px)] bg-fog px-24 py-64">
@@ -90,6 +92,18 @@ function ProjectDetailPage() {
           <div className="mt-16">
             <FundingProgress fundingRaised={project.funding_raised} fundingGoal={project.funding_goal} />
           </div>
+
+          {donateUrl && (
+            <a
+              href={donateUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-16 flex items-center justify-center gap-8 rounded-buttons bg-rust px-20 py-12 font-sohne text-body-lg font-medium text-pure-white transition-transform duration-150 hover:scale-[1.02] active:scale-95"
+            >
+              Donate on GlobalGiving
+              <ExternalLink size={18} />
+            </a>
+          )}
 
           {impact_estimate && (
             <div className="mt-16">

@@ -23,6 +23,7 @@ RAW_PROJECT = {
     "themes": {"theme": [{"id": "edu", "name": "Education"}]},
     "goal": 98000.0,
     "funding": 67364.43,
+    "projectLink": "https://www.globalgiving.org/projects/learning-centers-afghan-women/",
 }
 
 
@@ -80,6 +81,7 @@ def test_parse_project_maps_real_fields():
         "description_raw": "This project supports rural Learning Centers for Afghan women.",
         "funding_goal": 98000.0,
         "funding_raised": 67364.43,
+        "project_url": "https://www.globalgiving.org/projects/learning-centers-afghan-women/",
     }
 
 

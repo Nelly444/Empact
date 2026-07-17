@@ -26,6 +26,7 @@ export interface ProjectCardOut {
   summary_cached: string | null
   funding_goal: number | null
   funding_raised: number | null
+  project_url: string | null
   impact_estimate: ImpactEstimateOut | null
   similarity: number | null
 }

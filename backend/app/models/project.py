@@ -16,6 +16,7 @@ class Project(Base):
     title: Mapped[str] = mapped_column(String, index=True)
     theme: Mapped[str | None] = mapped_column(String, index=True, nullable=True)
     description_raw: Mapped[str | None] = mapped_column(Text, nullable=True)
+    project_url: Mapped[str | None] = mapped_column(String, nullable=True)
 
     funding_goal: Mapped[float | None] = mapped_column(Numeric(12, 2), nullable=True)
     funding_raised: Mapped[float | None] = mapped_column(Numeric(12, 2), nullable=True)
