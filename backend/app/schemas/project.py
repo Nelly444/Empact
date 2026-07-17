@@ -34,3 +34,4 @@ class ProjectDetailOut(ProjectCardOut):
     """Adds the raw description for the project detail view."""
 
     description_raw: str | None
+    similar_projects: list[ProjectCardOut] = []

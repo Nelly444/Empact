@@ -33,6 +33,7 @@ export interface ProjectCardOut {
 
 export interface ProjectDetailOut extends ProjectCardOut {
   description_raw: string | null
+  similar_projects: ProjectCardOut[]
 }
 
 export interface FilterOptions {

@@ -10,18 +10,9 @@ from app.models.organization import Organization
 from app.models.project import Project
 from app.schemas.search import SearchRequest, SearchResponse
 from app.services.embeddings import embed_text
+from app.services.similarity import passes_similarity_threshold
 
 router = APIRouter()
-
-# Cosine similarity below this is noise, not a real match. Measured empirically
-# against the live dataset: garbage queries ("f", "asdf qwer zxcv") top out
-# around 0.20-0.21, while genuine queries ("girls education in East Africa",
-# "help kids learn to code") score 0.32+ on even their weakest top-3 result.
-MIN_SIMILARITY = 0.25
-
-
-def _passes_similarity_threshold(similarity: float) -> bool:
-    return similarity >= MIN_SIMILARITY
 
 
 @router.post("/search", response_model=SearchResponse, dependencies=[Depends(rate_limit_search)])
@@ -60,6 +51,6 @@ def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchRespo
     results = [
         to_project_card(project, similarity=1 - dist)
         for project, dist in rows
-        if _passes_similarity_threshold(1 - dist)
+        if passes_similarity_threshold(1 - dist)
     ]
     return SearchResponse(results=results)

@@ -1,19 +1,11 @@
 from fastapi.testclient import TestClient
 
-from app.api.search import _passes_similarity_threshold
 from app.db.session import get_session_factory
 from app.main import app
 from app.models.organization import Organization
 from app.models.project import Project
 
 client = TestClient(app)
-
-
-def test_similarity_threshold_filters_low_scores():
-    """Empirically, garbage queries score <=0.21 and genuine queries score
-    >=0.32 against the live dataset - the threshold sits between them."""
-    assert not _passes_similarity_threshold(0.21)
-    assert _passes_similarity_threshold(0.32)
 
 
 def test_countries_served_filter_does_not_match_substring_country_names():

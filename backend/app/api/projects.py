@@ -4,15 +4,38 @@ from sqlalchemy.orm import Session, joinedload
 
 from app.api.serializers import to_project_card, to_project_detail
 from app.db.session import get_db
+from app.models.embedding import ProjectEmbedding
 from app.models.organization import Organization
 from app.models.project import Project
 from app.schemas.project import ProjectCardOut, ProjectDetailOut
+from app.services.similarity import passes_similarity_threshold
 
 router = APIRouter()
+
+SIMILAR_PROJECTS_LIMIT = 4
 
 
 def _base_query():
     return select(Project).options(joinedload(Project.organization), joinedload(Project.snapshots))
+
+
+def _similar_projects(db: Session, project: Project) -> list[tuple[Project, float]]:
+    """Nearest neighbors by embedding distance - reuses the catalog embeddings
+    already computed for /search, so this costs zero extra OpenAI calls."""
+    own_embedding = db.scalar(select(ProjectEmbedding).where(ProjectEmbedding.project_id == project.id))
+    if own_embedding is None:
+        return []
+
+    distance = ProjectEmbedding.embedding.cosine_distance(own_embedding.embedding)
+    ranked = (
+        _base_query()
+        .join(ProjectEmbedding, ProjectEmbedding.project_id == Project.id)
+        .where(Project.id != project.id)
+        .order_by(distance)
+        .limit(SIMILAR_PROJECTS_LIMIT)
+    )
+    rows = db.execute(ranked.add_columns(distance)).unique().all()
+    return [(p, 1 - dist) for p, dist in rows if passes_similarity_threshold(1 - dist)]
 
 
 @router.get("/projects", response_model=list[ProjectCardOut])
@@ -45,4 +68,4 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
     project = db.scalar(_base_query().where(Project.id == project_id))
     if project is None:
         raise HTTPException(status_code=404, detail="Project not found")
-    return to_project_detail(project)
+    return to_project_detail(project, similar_projects=_similar_projects(db, project))

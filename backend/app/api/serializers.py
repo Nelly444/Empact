@@ -10,7 +10,8 @@ def to_project_card(project: Project, similarity: float | None = None) -> Projec
     return card
 
 
-def to_project_detail(project: Project) -> ProjectDetailOut:
+def to_project_detail(project: Project, similar_projects: list[tuple[Project, float]] = ()) -> ProjectDetailOut:
     detail = ProjectDetailOut.model_validate(project, from_attributes=True)
     detail.impact_estimate = build_impact_estimate(project, project.snapshots)
+    detail.similar_projects = [to_project_card(p, similarity=s) for p, s in similar_projects]
     return detail

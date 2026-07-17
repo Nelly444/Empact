@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import FundingProgress from '../components/FundingProgress'
 import OrgBadge from '../components/OrgBadge'
+import ResultCard from '../components/ResultCard'
 import ThemeTag from '../components/ThemeTag'
 import { ApiError, api } from '../lib/api'
 import { safeHttpUrl } from '../lib/format'
@@ -133,6 +134,19 @@ function ProjectDetailPage() {
             </div>
           )}
         </div>
+
+        {project.similar_projects.length > 0 && (
+          <div className="mt-32">
+            <h2 className="font-sohne text-caption font-medium uppercase tracking-caption text-graphite">
+              Similar projects
+            </h2>
+            <div className="mt-16 flex flex-col gap-16">
+              {project.similar_projects.map((similar, index) => (
+                <ResultCard key={similar.id} project={similar} index={index} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   )
