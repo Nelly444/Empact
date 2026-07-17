@@ -47,6 +47,17 @@ class PerClientRateLimiter:
 
 
 def _client_key(request: Request) -> str:
+    # Behind a reverse proxy (Render, Railway, Fly.io, etc.), request.client.host
+    # is the proxy's own address for every request, not the visitor's - that
+    # would collapse this per-IP limiter into one shared limit for the whole
+    # site. Those hosts terminate the client connection at their own edge and
+    # set X-Forwarded-For themselves, overwriting anything a client sent, so
+    # trusting it is safe in that deployment shape. Locally there's no proxy,
+    # so the header is simply absent and this falls back to the raw socket
+    # peer as before.
+    forwarded_for = request.headers.get("x-forwarded-for")
+    if forwarded_for:
+        return forwarded_for.split(",")[0].strip()
     return request.client.host if request.client else "unknown"
 
 
