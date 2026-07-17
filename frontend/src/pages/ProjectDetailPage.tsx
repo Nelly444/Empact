@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import FundingProgress from '../components/FundingProgress'
 import OrgBadge from '../components/OrgBadge'
 import ResultCard from '../components/ResultCard'
+import SaveButton from '../components/SaveButton'
 import ThemeTag from '../components/ThemeTag'
 import { ApiError, api } from '../lib/api'
 import { safeHttpUrl } from '../lib/format'
@@ -77,7 +78,10 @@ function ProjectDetailPage() {
         <div className="animate-card-in mt-24 rounded-cards bg-pure-white p-24 shadow-subtle sm:p-32">
           <div className="flex items-start justify-between gap-16">
             <OrgBadge organization={organization} />
-            {project.theme && <ThemeTag theme={project.theme} />}
+            <div className="flex shrink-0 items-center gap-8">
+              {project.theme && <ThemeTag theme={project.theme} />}
+              <SaveButton project={project} />
+            </div>
           </div>
 
           <h1 className="mt-16 font-signifier text-heading leading-heading tracking-heading text-ink">

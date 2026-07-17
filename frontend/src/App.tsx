@@ -3,6 +3,7 @@ import Footer from './components/Footer'
 import NavBar from './components/NavBar'
 import NotFoundPage from './pages/NotFoundPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
+import SavedProjectsPage from './pages/SavedProjectsPage'
 import SearchPage from './pages/SearchPage'
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SearchPage />} />
         <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
+        <Route path="/saved" element={<SavedProjectsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
