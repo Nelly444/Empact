@@ -1,5 +1,7 @@
 # Empact
 
+https://empact-swart.vercel.app/
+
 Describe a cause in plain English, get back real, vetted charity projects — not a keyword search, an actual match.
 
 ![Empact screenshot](docs/screenshot.png)
@@ -37,7 +39,7 @@ Empact turns a plain-English description of what you care about ("girls' educati
 
 ## Architecture
 
-The backend is the only client of the GlobalGiving API, OpenAI, and Anthropic — it fetches and caches project data on a scheduled batch job, generates each project's embedding and summary once, and stores everything in Postgres. The frontend never talks to any of those services directly; it only calls the FastAPI backend, which keeps every API key server-side and every paid call cached rather than repeated per page view.
+The backend is the only client of the GlobalGiving API, OpenAI, and Anthropic. It fetches and caches project data on a scheduled batch job, generates each project's embedding and summary once, and stores everything in Postgres. The frontend never talks to any of those services directly; it only calls the FastAPI backend, which keeps every API key server-side and every paid call cached rather than repeated per page view.
 
 ---
 
