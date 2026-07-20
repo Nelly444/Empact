@@ -58,7 +58,7 @@ describe('api', () => {
     const assertion = expect(promise).rejects.toThrow('Failed to fetch')
     await vi.runAllTimersAsync()
     await assertion
-    expect(fetchMock).toHaveBeenCalledTimes(3) // initial attempt + 2 retries
+    expect(fetchMock).toHaveBeenCalledTimes(3)
     vi.useRealTimers()
   })
 

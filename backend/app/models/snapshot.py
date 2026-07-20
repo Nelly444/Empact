@@ -7,8 +7,6 @@ from app.db.session import Base
 
 
 class ProjectSnapshot(Base):
-    """Append-only amount_raised history, populated on every cache refresh — never overwritten."""
-
     __tablename__ = "project_snapshots"
 
     id: Mapped[int] = mapped_column(primary_key=True)

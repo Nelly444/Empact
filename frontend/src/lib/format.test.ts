@@ -21,7 +21,6 @@ describe('formatPercent', () => {
   })
 
   it('caps display at 100% even if the raw value exceeds it', () => {
-    // funding_raised can exceed funding_goal in the real GlobalGiving data.
     expect(formatPercent(142)).toBe('100%')
   })
 })

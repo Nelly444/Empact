@@ -6,7 +6,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.session import Base
 
-# Dimension of OpenAI text-embedding-3-small
 EMBEDDING_DIM = 1536
 
 

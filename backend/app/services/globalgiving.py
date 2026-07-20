@@ -1,11 +1,3 @@
-"""GlobalGiving API client.
-
-Verified against a live pull: /all/projects (no suffix) returns no nested
-organization data at all, and defaults to XML. /all/projects/active is the
-endpoint that nests a real organization object, and requires an explicit
-Accept: application/json header to get JSON instead of XML.
-"""
-
 from collections.abc import Iterator
 
 import httpx

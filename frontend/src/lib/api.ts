@@ -1,14 +1,5 @@
-// 127.0.0.1, not localhost: uvicorn's dev default binds IPv4-only
-// (127.0.0.1), and on machines where "localhost" resolves to the IPv6
-// loopback (::1) first, the browser can hang or fail before falling back
-// to IPv4 - pointing straight at the IPv4 address sidesteps that entirely.
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:8000'
 
-// Retry delays for GET requests only - a GET never mutates anything, so
-// retrying after the server never even received it (connection refused, a
-// dev-server reload, the backend still starting up) is always safe. POSTs
-// are never auto-retried: if a /search POST reached the server, blindly
-// retrying could double-fire a paid embedding call.
 const GET_RETRY_DELAYS_MS = [400, 1000]
 
 export class ApiError extends Error {

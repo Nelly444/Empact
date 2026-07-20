@@ -11,8 +11,6 @@ function SaveButton({ project }: SaveButtonProps) {
   const [isSaved, setIsSaved] = useState(() => isProjectSaved(project.id))
 
   function handleClick(event: React.MouseEvent) {
-    // Cards wrap their title in a <Link> - stop this button from also
-    // triggering that navigation.
     event.preventDefault()
     event.stopPropagation()
     toggleSavedProject(project)

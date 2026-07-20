@@ -14,9 +14,6 @@ function readAll(): ProjectCardOut[] {
 
 function writeAll(projects: ProjectCardOut[]): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(projects))
-  // localStorage's own "storage" event only fires in *other* tabs, not this
-  // one, so components in this tab (the save button, the nav badge, the
-  // saved-projects list) need a same-tab signal to know something changed.
   window.dispatchEvent(new Event(CHANGE_EVENT))
 }
 

@@ -48,9 +48,6 @@ function SearchPage() {
 
   useEffect(() => {
     loadFilterOptions()
-    // Show real projects immediately on landing instead of a blank page
-    // below the search bar — no query means no paid embedding call, just
-    // a plain browse of the cached catalog.
     handleSearch({})
   }, [])
 

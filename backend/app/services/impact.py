@@ -1,23 +1,12 @@
-"""Funding-impact estimate calculations.
-
-Every number here is computed from real GlobalGiving fields. No invented
-outcome ratios (e.g. "$5 = 2 meals") are used anywhere in this module.
-"""
-
 from app.models.project import Project
 from app.models.snapshot import ProjectSnapshot
 from app.schemas.project import ImpactEstimateOut
 
 EXAMPLE_DONATION = 5.0
-
-# Formula 2 needs enough time-series spread to mean anything; with fewer
-# snapshots than this the velocity figure would be noise, so it's omitted
-# rather than shown misleadingly.
 MIN_SNAPSHOTS_FOR_VELOCITY = 3
 
 
 def marginal_dollar_framing(project: Project, donation: float = EXAMPLE_DONATION) -> tuple[float, float, str]:
-    """Pure arithmetic on funding_goal / funding_raised — no external data."""
     goal = float(project.funding_goal or 0)
     raised = float(project.funding_raised or 0)
     remaining_need = max(goal - raised, 0)
@@ -32,11 +21,6 @@ def marginal_dollar_framing(project: Project, donation: float = EXAMPLE_DONATION
             "project's remaining funding need."
         )
     else:
-        # For large remaining needs (the common case - most goals are in the
-        # tens of thousands+), a $5 donation rounds to "~0.0%" at any sane
-        # precision, which reads as broken rather than just small. Flipping
-        # to "how many donations this size" keeps the same real inputs
-        # (remaining_need / donation) but stays a legible non-zero number.
         donations_needed = remaining_need / donation
         summary = (
             f"It would take about {donations_needed:,.0f} donations of ${donation:g} "
@@ -46,7 +30,6 @@ def marginal_dollar_framing(project: Project, donation: float = EXAMPLE_DONATION
 
 
 def funding_velocity(snapshots: list[ProjectSnapshot]) -> tuple[float | None, float | None]:
-    """$/day raised over the snapshot window; (None, None) until enough history exists."""
     if len(snapshots) < MIN_SNAPSHOTS_FOR_VELOCITY:
         return None, None
 

@@ -54,8 +54,6 @@ beforeEach(() => {
   mockedApi.get.mockReset()
   mockedApi.post.mockReset()
   mockedApi.get.mockResolvedValue(FILTER_OPTIONS)
-  // SearchPage now auto-runs a browse search on mount, so every test's
-  // initial render fires a POST even before it sets up its own scenario.
   mockedApi.post.mockResolvedValue({ results: [] })
 })
 

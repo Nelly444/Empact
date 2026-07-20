@@ -3,10 +3,6 @@ interface ThemeColor {
   text: string
 }
 
-// A muted, editorial color per GlobalGiving theme category — distinct from
-// Rust/Apricot Wash/Sky Wash, which stay reserved for funding-data meaning
-// (progress bars, impact estimates) so a tag never gets confused with a
-// data callout that happens to share its color.
 const THEME_COLORS: Record<string, ThemeColor> = {
   'Climate Action': { bg: '#e1ead9', text: '#2f5233' },
   'Economic Growth': { bg: '#f4e8c8', text: '#7a5a12' },

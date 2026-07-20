@@ -1,10 +1,6 @@
 function Hero() {
   return (
     <section className="relative isolate overflow-hidden bg-ink px-24 py-64 text-center sm:py-96">
-      {/* Each blob stays a single hue and drifts on its own timer — blending Rust
-          and Teal directly (e.g. one linear-gradient) desaturates into a muddy
-          olive at the midpoint, so separate blurred glows over an Ink base
-          avoid that seam entirely while still animating. */}
       <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
         <div
           className="animate-blob-a will-change-transform absolute -left-[140px] -top-[140px] h-[380px] w-[380px] rounded-full bg-rust opacity-60 blur-[90px] motion-reduce:animate-none"

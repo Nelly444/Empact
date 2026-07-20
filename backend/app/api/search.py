@@ -17,7 +17,6 @@ router = APIRouter()
 
 @router.post("/search", response_model=SearchResponse, dependencies=[Depends(rate_limit_search)])
 def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchResponse:
-    """Filter first, then rank by semantic relevance if a query was given."""
     query = select(Project).options(joinedload(Project.organization), joinedload(Project.snapshots))
 
     if request.org_name or request.home_country or request.countries_served:
@@ -27,9 +26,6 @@ def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchRespo
     if request.home_country:
         query = query.where(Organization.home_country == request.home_country)
     if request.countries_served:
-        # countries_served is a comma-joined string (see Organization model), so a plain
-        # substring match would wrongly match "Niger" against "Nigeria", "Sudan" against
-        # "South Sudan", etc. Pad both sides with delimiters to require a whole-token match.
         padded_countries = func.concat(", ", Organization.countries_served, ",")
         query = query.where(padded_countries.contains(f", {request.countries_served},"))
     if request.themes:

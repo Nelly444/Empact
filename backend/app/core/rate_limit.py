@@ -6,8 +6,6 @@ from fastapi import HTTPException, Request
 
 
 class RateLimiter:
-    """Blocks each call until enough time has passed since the last one."""
-
     def __init__(self, max_calls_per_minute: int):
         self._min_interval = 60.0 / max_calls_per_minute
         self._lock = threading.Lock()
@@ -22,13 +20,6 @@ class RateLimiter:
 
 
 class PerClientRateLimiter:
-    """Sliding-window request limiter keyed by client IP.
-
-    Public endpoints have no API key (a value shipped to every browser isn't
-    a real secret), so this is what actually guards against a single client
-    hammering the API or burning through the shared OpenAI/Anthropic budget.
-    """
-
     def __init__(self, max_requests: int, window_seconds: float):
         self._max_requests = max_requests
         self._window = window_seconds
@@ -47,25 +38,13 @@ class PerClientRateLimiter:
 
 
 def _client_key(request: Request) -> str:
-    # Behind a reverse proxy (Render, Railway, Fly.io, etc.), request.client.host
-    # is the proxy's own address for every request, not the visitor's - that
-    # would collapse this per-IP limiter into one shared limit for the whole
-    # site. Those hosts terminate the client connection at their own edge and
-    # set X-Forwarded-For themselves, overwriting anything a client sent, so
-    # trusting it is safe in that deployment shape. Locally there's no proxy,
-    # so the header is simply absent and this falls back to the raw socket
-    # peer as before.
     forwarded_for = request.headers.get("x-forwarded-for")
     if forwarded_for:
         return forwarded_for.split(",")[0].strip()
     return request.client.host if request.client else "unknown"
 
 
-# General ceiling across all public data endpoints.
 _general_limiter = PerClientRateLimiter(max_requests=60, window_seconds=60)
-
-# /search can trigger a live paid OpenAI embedding call per request, so it
-# gets a tighter per-IP ceiling on top of the general one.
 _search_limiter = PerClientRateLimiter(max_requests=12, window_seconds=60)
 
 

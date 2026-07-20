@@ -6,7 +6,6 @@ from anthropic import Anthropic
 from app.core.config import settings
 from app.core.rate_limit import RateLimiter
 
-# Cheap, fast model — appropriate for a batch job, never called per-request.
 SUMMARY_MODEL = "claude-haiku-4-5"
 RATE_LIMIT_PER_MINUTE = 30
 
@@ -26,9 +25,6 @@ _BOLD_ITALIC = re.compile(r"\*{1,3}(.+?)\*{1,3}")
 
 
 def _strip_markdown(text: str) -> str:
-    """The model doesn't always honor the plain-prose instruction — drop
-    stray title/header lines and clean up bullets/emphasis rather than
-    caching malformed text."""
     lines = [
         _BULLET_LINE.sub("", line)
         for line in text.splitlines()

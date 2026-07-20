@@ -20,8 +20,6 @@ def _base_query():
 
 
 def _similar_projects(db: Session, project: Project) -> list[tuple[Project, float]]:
-    """Nearest neighbors by embedding distance - reuses the catalog embeddings
-    already computed for /search, so this costs zero extra OpenAI calls."""
     own_embedding = db.scalar(select(ProjectEmbedding).where(ProjectEmbedding.project_id == project.id))
     if own_embedding is None:
         return []
@@ -47,7 +45,6 @@ def list_projects(
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
 ):
-    """Structured filters only — no semantic ranking, unlike /search."""
     query = _base_query()
     if org_name or home_country:
         query = query.join(Organization)

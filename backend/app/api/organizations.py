@@ -22,7 +22,6 @@ def list_organizations(
 
 @router.get("/organizations/filter-options")
 def filter_options(db: Session = Depends(get_db)) -> dict:
-    """Feeds the frontend's filter dropdowns."""
     org_names = db.scalars(select(Organization.name).order_by(Organization.name)).all()
     home_countries = db.scalars(
         select(Organization.home_country).where(Organization.home_country.isnot(None)).distinct().order_by(Organization.home_country)
@@ -31,9 +30,6 @@ def filter_options(db: Session = Depends(get_db)) -> dict:
         select(Project.theme).where(Project.theme.isnot(None)).distinct().order_by(Project.theme)
     ).all()
 
-    # countries_served is a denormalized comma-joined string (see Organization
-    # model), so the distinct list of individual countries has to be built in
-    # Python rather than as a plain SQL DISTINCT.
     raw_countries_served = db.scalars(
         select(Organization.countries_served).where(Organization.countries_served.isnot(None))
     ).all()

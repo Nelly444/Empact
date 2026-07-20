@@ -8,14 +8,11 @@ class ImpactEstimateOut(BaseModel):
     example_donation: float
     coverage_pct: float
     summary: str
-    # None (not 0) until enough snapshots exist — see app/services/impact.py.
     funding_velocity_per_day: float | None = None
     days_to_fully_funded: float | None = None
 
 
 class ProjectCardOut(BaseModel):
-    """Shape used by search results / list views."""
-
     model_config = ConfigDict(from_attributes=True)
 
     id: int
@@ -31,7 +28,5 @@ class ProjectCardOut(BaseModel):
 
 
 class ProjectDetailOut(ProjectCardOut):
-    """Adds the raw description for the project detail view."""
-
     description_raw: str | None
     similar_projects: list[ProjectCardOut] = []

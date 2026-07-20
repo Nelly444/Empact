@@ -1,14 +1,3 @@
-"""Batch job: GlobalGiving -> Postgres cache, snapshots, embeddings, summaries.
-
-Run with: python -m app.jobs.refresh_cache [--limit N]
-
-This is the only place that calls the paid OpenAI/Anthropic APIs — embeddings
-and summaries are generated once per project and persisted, never
-regenerated on a read path. Omit --limit to sync GlobalGiving's full active
-project catalog (currently several thousand projects, several thousand paid
-API calls).
-"""
-
 import argparse
 from datetime import datetime, timezone
 
@@ -50,8 +39,6 @@ def upsert_project(db: Session, raw: dict, org: Organization) -> Project:
             setattr(project, key, value)
     db.flush()
 
-    # Only snapshot when the amount actually changed — otherwise every re-run
-    # of this job (even with no real funding movement) bloats the history.
     latest_snapshot = db.scalar(
         select(ProjectSnapshot)
         .where(ProjectSnapshot.project_id == project.id)
@@ -91,10 +78,6 @@ def run(limit: int | None = None) -> None:
                 project = upsert_project(db, raw_project, org)
                 ensure_embedding(db, project)
                 ensure_summary(db, project)
-                # Commit per project rather than once at the end: this is a
-                # long-running job with thousands of paid OpenAI/Anthropic
-                # calls, and a crash partway through must not discard AI
-                # output that's already been generated (and paid for).
                 db.commit()
     finally:
         client.close()

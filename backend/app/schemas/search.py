@@ -14,9 +14,6 @@ class SearchRequest(BaseModel):
     @field_validator("query")
     @classmethod
     def normalize_query(cls, value: str | None) -> str | None:
-        """Strip and validate before this ever reaches the paid embedding API -
-        a raw "f" or "   " would otherwise still trigger a billed OpenAI call
-        for something with no real content."""
         if value is None:
             return None
         stripped = value.strip()

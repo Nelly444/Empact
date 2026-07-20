@@ -12,7 +12,6 @@ class Base(DeclarativeBase):
 
 @lru_cache
 def get_engine():
-    # Lazy + cached so the app can boot even before Postgres is reachable.
     return create_engine(settings.database_url, pool_pre_ping=True)
 
 
