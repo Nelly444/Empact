@@ -6,7 +6,11 @@ Describe a cause in plain English, get back real, vetted charity projects — no
 
 ![Empact screenshot](docs/screenshot.png)
 
-**Live demo:** _coming soon_
+**Live demo:** 
+
+https://asu.zoom.us/rec/share/1Liz7jUtiDITfoodd7LuyLlU0Vu3sUjlaIAeyODP8E4ekgl6jHeuHF53gwyB-k-e.DuqVLSX1kH-6m5_N?startTime=1784597290000
+
+Passcode: w+G4.izN
 
 ## What it does
 
