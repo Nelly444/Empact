@@ -47,4 +47,4 @@ The backend is the only client of the GlobalGiving API, OpenAI, and Anthropic. I
 
 ---
 
-Built by [Nelson Supriyasilp](https://github.com/Nelly444) — [LinkedIn](https://www.linkedin.com/in/nelson-supriyasilp/)
+Built by [Nelson Supriyasilp](https://github.com/Nelly444)
