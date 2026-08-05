@@ -2,6 +2,8 @@
 
 https://empact-swart.vercel.app/
 
+Note: the backend is hosted on Render's free tier and may take 30-60 seconds to spin up on first load.
+
 Describe a cause in plain English, get back real, vetted charity projects — not a keyword search, an actual match.
 
 ![Empact screenshot](docs/screenshot.png)
